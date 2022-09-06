@@ -1,5 +1,6 @@
 public class Funcionario{
     private String nome,user,senha;
+    //metodo setNome não permite que a String esteja vazia
     public void setNome(String nome){
         if(nome != null){
             if(nome.isEmpty()){
@@ -8,6 +9,7 @@ public class Funcionario{
             else{this.nome = nome;}
         }
     }
+    //metodo setUser não permite que a String esteja vazia
     public void setUser(String user){
         if(user != null){
             if(user.isEmpty()){
@@ -16,6 +18,7 @@ public class Funcionario{
             else{this.user = user;}
         }
     }
+    //metodo setSenha não permite qu ela tenha menos que 8 caracteres
     public void setSenha(String senha){
         if(senha != null){
             if(senha.length() < 8){
@@ -32,14 +35,5 @@ public class Funcionario{
     }
     public String getSenha(){
         return senha;
-    }
-    public static void main(String args[]){
-        Funcionario v = new Funcionario();
-        v.setNome(" ");
-        v.setUser("welanio");
-        v.setSenha("12345678");
-        System.out.println(v.getNome());
-        System.out.println(v.getUser());
-        System.out.println(v.getSenha());
     }
 }
