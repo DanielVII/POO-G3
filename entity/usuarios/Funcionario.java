@@ -1,7 +1,9 @@
+package usuarios;
 public class Funcionario{
     private String nome,user,senha;
-    //metodo setNome não permite que a String esteja vazia
+
     public void setNome(String nome){
+        //metodo setNome não permite que a String esteja vazia
         if(nome != null){
             if(nome.isEmpty()){
                 System.out.println("String nao pode ser vazia");
@@ -9,8 +11,8 @@ public class Funcionario{
             else{this.nome = nome;}
         }
     }
-    //metodo setUser não permite que a String esteja vazia
     public void setUser(String user){
+        //metodo setUser não permite que a String esteja vazia
         if(user != null){
             if(user.isEmpty()){
                 System.out.println("String nao pode ser vazia");
@@ -18,8 +20,8 @@ public class Funcionario{
             else{this.user = user;}
         }
     }
-    //metodo setSenha não permite qu ela tenha menos que 8 caracteres
     public void setSenha(String senha){
+        //metodo setSenha não permite qu ela tenha menos que 8 caracteres
         if(senha != null){
             if(senha.length() < 8){
                 System.out.println("a senha deve conter no minimo 8 caracteres");

@@ -1,3 +1,4 @@
+package testan;
 public class Tipo {
     private int codigoDoTipo;
     private String nome, formaDeVenda;

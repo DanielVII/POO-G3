@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import Produto;
+import base.Produto;
 
 public class NotaFiscal{
     private Double total = 0.0;
@@ -26,14 +26,14 @@ public class NotaFiscal{
     }
 
     public void addLinha(Produto produto, int quantidade){
-        if (quantidade > 0 && produto.getcodDeBarras() != null){
-            Double totalProduto = quantidade * produto.getpreDouble();
+        if (quantidade > 0 && produto.getCodBarras() != null){
+            Double totalProduto = quantidade * produto.getPreco();
             ArrayList<String> linha = new ArrayList<String>();
 
-            linha.add(produto.getcodDeBarras());
+            linha.add(produto.getCodBarras());
             linha.add(produto.getNome());
             linha.add(Integer.toString(quantidade));
-            linha.add(produto.getpreDouble().toString());
+            linha.add(produto.getPreco().toString());
             linha.add(totalProduto.toString());
 
             this.linhas.add(linha);
