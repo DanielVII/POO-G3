@@ -1,4 +1,4 @@
-package base;
+package model.entity;
 public class Tipo {
     private int codigoDoTipo;
     private String nome, formaDeVenda;

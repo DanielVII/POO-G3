@@ -1,4 +1,4 @@
-package usuarios;
+package entity;
 public class Funcionario{
     private String nome,user,senha;
 
