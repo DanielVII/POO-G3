@@ -1,4 +1,5 @@
-package entity;
+package model.entity;
+
 public class Funcionario{
     private String nome,user,senha;
 

@@ -1,4 +1,4 @@
-package usuarios;
+package model.entity;
 public class Gerente {
     private String nome,user,senha;
 

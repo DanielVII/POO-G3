@@ -1,4 +1,4 @@
-package base;
+package model.entity;
 
 public class Produto {
     private String nome;

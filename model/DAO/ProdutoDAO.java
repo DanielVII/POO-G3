@@ -1,25 +1,23 @@
 package model.DAO;
 
 import model.entity.Produto;
-import model.DAO.ProdutoDAO;
+import model.DAO.BaseDAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProdutoDAO {
-
-
-public class AlunoDao extends BaseDao<Produto>{
+public class ProdutoDAO extends BaseDAO<Produto>{
 	
-	public boolean inserir (Aluno aluno) {
-		String sql = "INSERT INTO tb_aluno  (cpf,nome,telefone,endereco) VALUES (?,?,?,?);";
+	public boolean inserir (Produto produto) {
+		String sql = "INSERT INTO tb_produto  (cpf,nome,telefone,endereco) VALUES (?,?,?,?);";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
-			pst.setString(1, aluno.getCpf());
-			pst.setString(2, aluno.getNome() );
-			pst.setString(3, aluno.getTelefone());
-			pst.setString(4, aluno.getEndereco());
+			pst.setString(1, produto.getNome());
+			pst.setString(2, produto.getMarca() );
+			pst.setString(3, produto.getCodBarras());
+			pst.setDouble(4, produto.getPreco());
+			pst.setDouble(4, produto.getTipo());
 			pst.execute();
 			return true;		
 		
