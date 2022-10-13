@@ -17,7 +17,6 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 			pst.setString(2, produto.getMarca() );
 			pst.setString(3, produto.getCodBarras());
 			pst.setDouble(4, produto.getPreco());
-			pst.setDouble(4, produto.getTipo());
 			pst.execute();
 			return true;		
 		
@@ -28,36 +27,34 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 		}				
 	}
 	
-	public boolean deletar(Aluno aluno) {
-		String sql = "DELETE FROM tb_aluno WHERE cpf=?;";
+    public boolean deletar(Produto produto) {
+		String sql = "DELETE FROM tb_produto WHERE codbarras=?;";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
-			pst.setString(1, aluno.getCpf());
+			pst.setString(1, produto.getCodBarras());
 			pst.execute();
 			
 			return true;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
 		
 	}
-	public boolean alterar(Aluno aluno) {
-		String sql = "UPDATE tb_aluno SET cpf=?,nome=?,telefone=?,endereco=? WHERE cpf=? ";
+    public boolean alterar(Produto produto) {
+		String sql = "UPDATE tb_produto SET nome=?,marca=?,codbarras=?,preco=? WHERE codbarras=? ";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
-			pst.setString(1, aluno.getCpf());
-			pst.setString(2, aluno.getNome() );
-			pst.setString(3, aluno.getTelefone());
-			pst.setString(4, aluno.getEndereco());
-			pst.setString(5, aluno.getCpf());
+			pst.setString(1, produto.getNome());
+			pst.setString(2, produto.getMarca() );
+			pst.setString(3, produto.getCodBarras());
+			pst.setDouble(4, produto.getPreco());
+			pst.setString(5, produto.getCodBarras());
 			pst.executeUpdate();
 			return true;		
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}	
