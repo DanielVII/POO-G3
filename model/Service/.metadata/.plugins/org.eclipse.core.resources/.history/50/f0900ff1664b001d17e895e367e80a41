@@ -1,0 +1,25 @@
+package POO-G3.model.Service;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import POO-G3.model.entity.Produto;
+import POO-G3.model.DAO.ProdutoDAO;
+import POO-G3.model.DAO.BaseInterDAO;
+
+public class ProductBO {
+	BaseInterDAO<Produto> dao = new ProdutoDAO();
+	
+	
+	public boolean inserir (Produto produto){
+		ResultSet result = dao.findBySpecifiedField(produto,"codDoTipo");
+		if (result == null || !(result.next())) {
+			if (dao.inserir(produto) == true)
+				return true;
+			  else return false;
+		}
+		else return false;
+	}
+}
