@@ -2,7 +2,7 @@ package model.entity;
 
 public class User{
     private String nome,user,senha;
-    private int nivel;
+    private int nivel,id;
 
     public void setNome(String nome){
         //metodo setNome não permite que a String esteja vazia
@@ -37,6 +37,12 @@ public class User{
         }
         else{this.nivel = nivel;}
     }
+    public void setId(int id){
+        if(id < 0){
+            System.out.println("o id nao pode ser negativo");
+        }
+        else{this.id = id;}
+    }
     public String getNome(){
         return nome;
     }
@@ -48,5 +54,8 @@ public class User{
     }
     public int getNivel(){
         return nivel;
+    }
+    public int getId(){
+        return id;
     }
 }
