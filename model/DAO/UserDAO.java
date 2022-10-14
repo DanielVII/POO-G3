@@ -1,7 +1,6 @@
 package model.DAO;
 
 import model.entity.User;
-import model.DAO.BaseDAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +20,6 @@ public class UserDAO extends BaseDAO<User>{
 			return true;		
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}				
@@ -37,7 +35,6 @@ public class UserDAO extends BaseDAO<User>{
 			return true;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -56,18 +53,17 @@ public class UserDAO extends BaseDAO<User>{
 			return true;		
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}	
 		
 	}
 	
-	public User findById(User e) {
+	public User findById(User user) {
 		String sql = "SELECT * FROM tb_user WHERE id=? ;";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
-			pst.setInt(1, e.getId());
+			pst.setInt(1, user.getId());
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {
 				User a = new User();
@@ -75,13 +71,12 @@ public class UserDAO extends BaseDAO<User>{
 				a.setSenha(rs.getString("senha"));
 				a.setUser(rs.getString("user"));
 				a.setNivel(rs.getInt("nivel"));
-				a.setId(e.getId());
+				a.setId(user.getId());
 				return a;
 			}
 			else return null;
 		
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 			return null;
 		}
@@ -96,43 +91,41 @@ public class UserDAO extends BaseDAO<User>{
 			return rs;
 		
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 			return null;
 		}
 	}
 
 	@Override
-	public ResultSet findBySpecifiedField(User e, String field) {
+	public ResultSet findBySpecifiedField(User user, String field) {
 		String sql = "SELECT * FROM tb_user WHERE " + field +"=? ;";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			switch (field) {
 			case "nome":
-				pst.setString(1, e.getNome());
+				pst.setString(1, user.getNome());
 				break;
 				
 			case "user":
-				pst.setString(1, e.getUser());
+				pst.setString(1, user.getUser());
 				break;
 				
 			case "senha":
-				pst.setString(1, e.getSenha());
+				pst.setString(1, user.getSenha());
 				break;
 				
 			case "nivel":
-				pst.setInt(1, e.getNivel());
+				pst.setInt(1, user.getNivel());
 				break;
 			
 			default: 
-				pst.setInt(1, e.getId());
+				pst.setInt(1, user.getId());
 			}
 			
 			ResultSet rs = pst.executeQuery();
 			return rs;
 		
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 			return null;
 		}
@@ -150,7 +143,6 @@ public class UserDAO extends BaseDAO<User>{
 			else return null;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -166,7 +158,6 @@ public class UserDAO extends BaseDAO<User>{
 			return rs;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
