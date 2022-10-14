@@ -10,13 +10,13 @@ import model.DAO.BaseInterDAO;
 import model.DAO.UserDAO;
 
 public class UserBO {
-	BaseInterDAO<Produto> dao = new ProdutoDAO();
+	BaseInterDAO<User> dao = new UserDAO();
 	
 	
 	public boolean inserir (User user){
 		ResultSet result = dao.findBySpecifiedField(user, "nome");
 		if (result == null || !(result.next())) {
-			if (dao.inserir(produto) == true)
+			if (dao.inserir(user) == true)
 				return true;
 			  else return false;
 		}
@@ -26,7 +26,7 @@ public class UserBO {
 	public boolean deletar (User user) {
 		ResultSet result = dao.findBySpecifiedField(user, "nome");
 		if(result != null && result.next()) {
-			if (dao.deletar(produto) == true) {
+			if (dao.deletar(user) == true) {
 				return true;
 			}
 			else return false;
@@ -37,7 +37,7 @@ public class UserBO {
 	public boolean alterar (User user){
 		ResultSet result = dao.findBySpecifiedField(user, "nome");
 		if (result == null || !(result.next())) {
-			if (dao.alterar(produto) == true)
+			if (dao.alterar(user) == true)
 				return true;
 			  else return false;
 		}
@@ -48,7 +48,7 @@ public class UserBO {
 	public boolean buscar (User user){
 		ResultSet result = dao.findBySpecifiedField(user, "nome");
 		if (result == null || !(result.next())) {
-			if (dao.alterar(produto) == true)
+			if (dao.alterar(user) == true)
 				return true;
 			  else return false;
 		}
