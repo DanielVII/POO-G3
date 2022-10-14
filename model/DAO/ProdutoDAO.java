@@ -1,7 +1,6 @@
 package model.DAO;
 
 import model.entity.Produto;
-import model.DAO.BaseDAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,25 +60,23 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 		
 	}
 	
-	public Aluno findById(Aluno e) {
-		String sql = "SELECT * FROM tb_aluno WHERE id=? ;";
+	public Produto findById(Produto produto) {
+		String sql = "SELECT * FROM tb_produto WHERE id=? ;";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
-			pst.setInt(1, e.getId());
+			pst.setInt(1, produto.getId());
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {
-				Aluno a = new Aluno();
-				a.setCpf(rs.getString("cpf"));
-				a.setEndereco(rs.getString("endereco"));
+				Produto a = new Produto();
 				a.setNome(rs.getString("nome"));
-				a.setTelefone(rs.getString("telefone"));
-				a.setId(e.getId());
+				a.setMarca(rs.getString("marca"));
+				a.setCodBarras(rs.getString("codbarras"));
+				a.setPreco(rs.getDouble("preco"));
 				return a;
 			}
 			else return null;
 		
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 			return null;
 		}
@@ -87,68 +84,65 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 
 	@Override
 	public ResultSet findAll() {
-		String sql = "SELECT * FROM tb_aluno;";
+		String sql = "SELECT * FROM tb_produto;";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
 			return rs;
 		
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 			return null;
 		}
 	}
 
 	@Override
-	public ResultSet findBySpecifiedField(Aluno e, String field) {
-		String sql = "SELECT * FROM tb_aluno WHERE " + field +"=? ;";
+	public ResultSet findBySpecifiedField(Produto produto, String field) {
+		String sql = "SELECT * FROM tb_produto WHERE " + field +"=? ;";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			switch (field) {
-			case "cpf":
-				pst.setString(1, e.getCpf());
-				break;
-				
 			case "nome":
-				pst.setString(1, e.getNome());
+				pst.setString(1, produto.getNome());
 				break;
 				
-			case "telefone":
-				pst.setString(1, e.getTelefone());
+			case "marca":
+				pst.setString(1, produto.getMarca());
 				break;
 				
-			case "endereco":
-				pst.setString(1, e.getEndereco());
+			case "codbarras":
+				pst.setString(1, produto.getCodBarras());
+				break;
+				
+			case "preco":
+				pst.setDouble(1, produto.getPreco());
 				break;
 			
 			default: 
-				pst.setInt(1, e.getId());
+				pst.setInt(1, produto.getId());
 			}
 			
 			ResultSet rs = pst.executeQuery();
 			return rs;
 		
 		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 			return null;
 		}
 	}
 	
-	public Aluno buscar(Aluno aluno) {
-		String sql = "SELECT * FROM tb_aluno WHERE cpf=? ;";
+	public Produto buscar(Produto produto) {
+		String sql = "SELECT * FROM tb_produto WHERE codbarras=? ;";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
-			pst.setString(1, aluno.getCpf());
+			pst.setString(1, produto.getCodBarras());
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {
-				return aluno;
+				return produto;
 			}
 			else return null;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -156,7 +150,7 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 	}
 	
 	public ResultSet buscar() {
-		String sql = "SELECT * FROM tb_aluno;";
+		String sql = "SELECT * FROM tb_produto;";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
@@ -164,7 +158,6 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 			return rs;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

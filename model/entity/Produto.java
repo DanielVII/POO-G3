@@ -1,6 +1,7 @@
 package model.entity;
 
 public class Produto {
+    private int id;
     private String nome;
     private String marca;
     private String codDeBarras;
@@ -11,6 +12,10 @@ public class Produto {
      * e então seja chamada essa função, a qual vai receber o valor preço do produto em 
      * questão e, após verificação, ele será trocado pelo novo valor
     */
+
+    public int getId(){
+        return this.id;
+    }
 
     public void setPreco(Double valor) {
         if (valor > 0){
