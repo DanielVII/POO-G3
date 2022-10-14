@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class ProdutoDAO extends BaseDAO<Produto>{
 	
 	public boolean inserir (Produto produto) {
-		String sql = "INSERT INTO tb_produto  (cpf,nome,telefone,endereco) VALUES (?,?,?,?);";
+		String sql = "INSERT INTO tb_produto  (nome,marca,codbarras,preco) VALUES (?,?,?,?);";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			pst.setString(1, produto.getNome());

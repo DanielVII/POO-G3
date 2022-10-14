@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Copy element &apos;&apos; to &apos;poraojdas.opa&apos;&#x0D;&#x0A;- Original project: &apos;POO-G3&apos;&#x0D;&#x0A;- Destination element: &apos;poraojdas.opa&apos;&#x0D;&#x0A;- Original element: &apos;poraojdas.opa&apos;" description="Copy field" destination="/model\/Service&lt;{ProductBO.java[poraojdas^opa" element1="/model\/Service&lt;{ProductBO.java[poraojdas^opa" flags="589830" id="org.eclipse.jdt.ui.copy" members="1" policy="org.eclipse.jdt.ui.copyMembers" stamp="1665713037405" version="1.0"/>
-</session>
