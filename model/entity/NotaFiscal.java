@@ -1,7 +1,6 @@
 package model.entity;
 
 import java.util.ArrayList;
-import model.entity.Produto;
 
 public class NotaFiscal{
     private Double total = 0.0;

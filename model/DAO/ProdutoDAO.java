@@ -1,6 +1,7 @@
 package model.DAO;
 
 import model.entity.Produto;
+import model.entity.Tipo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,25 +10,38 @@ import java.sql.SQLException;
 public class ProdutoDAO extends BaseDAO<Produto>{
 	
 	public boolean inserir (Produto produto) {
-		String sql = "INSERT INTO tb_produto  (nome,marca,codbarras,preco) VALUES (?,?,?,?);";
+		String sql = "INSERT INTO produtos  (nome,marca,cod_de_barras,preco,quantidade,id_tipo) VALUES (?,?,?,?,?,?);";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			pst.setString(1, produto.getNome());
 			pst.setString(2, produto.getMarca() );
 			pst.setString(3, produto.getCodBarras());
 			pst.setDouble(4, produto.getPreco());
+			pst.setInt(5, produto.getQuantidade());
+			
+			Tipo tipo = produto.getTipo();
+			if (tipo.getId() == 0) {
+				TipoDAO daoTipo = new TipoDAO();
+				ResultSet rs = daoTipo.encontrarPorCampoEspecifico(tipo, "nome"); //Se ele não tem o id, pois é igual a 0, muito provavel de ter o nome
+				while(rs.next()) {
+					tipo.setId(rs.getInt("id_tipo"));
+					tipo.setNome(rs.getString("nome"));
+					tipo.setFormaDeVenda(rs.getString("forma_de_venda"));					
+				}
+			}
+			
+			pst.setInt(6, tipo.getId());
 			pst.execute();
 			return true;		
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}				
 	}
 	
     public boolean deletar(Produto produto) {
-		String sql = "DELETE FROM tb_produto WHERE codbarras=?;";
+		String sql = "DELETE FROM produtos WHERE cod_de_barras=?;";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			pst.setString(1, produto.getCodBarras());
@@ -41,15 +55,17 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 		}
 		
 	}
+    
     public boolean alterar(Produto produto) {
-		String sql = "UPDATE tb_produto SET nome=?,marca=?,codbarras=?,preco=? WHERE codbarras=? ";
+		String sql = "UPDATE produtos SET nome=?,marca=?,codbarras=?,preco=?,quantidade=? WHERE codbarras=? ";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			pst.setString(1, produto.getNome());
 			pst.setString(2, produto.getMarca() );
 			pst.setString(3, produto.getCodBarras());
 			pst.setDouble(4, produto.getPreco());
-			pst.setString(5, produto.getCodBarras());
+			pst.setDouble(5, produto.getQuantidade());
+			pst.setString(6, produto.getCodBarras());
 			pst.executeUpdate();
 			return true;		
 		
@@ -59,46 +75,10 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 		}	
 		
 	}
-	
-	public Produto findById(Produto produto) {
-		String sql = "SELECT * FROM tb_produto WHERE id=? ;";
-		try {
-			PreparedStatement pst = getConnection().prepareStatement(sql);
-			pst.setInt(1, produto.getId());
-			ResultSet rs = pst.executeQuery();
-			if(rs.next()) {
-				Produto a = new Produto();
-				a.setNome(rs.getString("nome"));
-				a.setMarca(rs.getString("marca"));
-				a.setCodBarras(rs.getString("codbarras"));
-				a.setPreco(rs.getDouble("preco"));
-				return a;
-			}
-			else return null;
-		
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			return null;
-		}
-	}
 
 	@Override
-	public ResultSet findAll() {
-		String sql = "SELECT * FROM tb_produto;";
-		try {
-			PreparedStatement pst = getConnection().prepareStatement(sql);
-			ResultSet rs = pst.executeQuery();
-			return rs;
-		
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			return null;
-		}
-	}
-
-	@Override
-	public ResultSet findBySpecifiedField(Produto produto, String field) {
-		String sql = "SELECT * FROM tb_produto WHERE " + field +"=? ;";
+	public ResultSet encontrarPorCampoEspecifico(Produto produto, String field) {
+		String sql = "SELECT * FROM produtos WHERE " + field +"=? ;";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			switch (field) {
@@ -110,16 +90,14 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 				pst.setString(1, produto.getMarca());
 				break;
 				
-			case "codbarras":
+			case "cod_de_barras":
 				pst.setString(1, produto.getCodBarras());
 				break;
 				
 			case "preco":
 				pst.setDouble(1, produto.getPreco());
 				break;
-			
-			default: 
-				pst.setInt(1, produto.getId());
+
 			}
 			
 			ResultSet rs = pst.executeQuery();
@@ -131,26 +109,8 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 		}
 	}
 	
-	public Produto buscar(Produto produto) {
-		String sql = "SELECT * FROM tb_produto WHERE codbarras=? ;";
-		try {
-			PreparedStatement pst = getConnection().prepareStatement(sql);
-			pst.setString(1, produto.getCodBarras());
-			ResultSet rs = pst.executeQuery();
-			if(rs.next()) {
-				return produto;
-			}
-			else return null;
-		
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-	}
-	
-	public ResultSet buscar() {
-		String sql = "SELECT * FROM tb_produto;";
+	public ResultSet encontrarTodos() {
+		String sql = "SELECT * FROM produtos;";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
@@ -164,6 +124,4 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 		
 	}
 	
-	
-
 }
