@@ -1,35 +1,36 @@
 package model.entity;
 public class Tipo {
-    private int codigoDoTipo;
     private String nome, formaDeVenda;
+    private int id = 0;
 
-    public int getCodigoDoTipo(){
-        return this.codigoDoTipo;
+    public int getId() {
+    	return this.id;
     }
-
-    public void setCodigoDoTipo(int cod){
-        if(cod > 0){
-            this.codigoDoTipo = cod;
-        }
+    
+    public void setId(int id) {
+    	if (id > 0) {
+    		this.id = id;
+    	}
     }
-
+    
     public String getNome(){
-        return this.nome;
+    	return this.nome;
     }
-
+    
     public void setNome(String nome){
-        if (!nome.isEmpty()){
-            this.nome = nome;
-        }
+    	if (!nome.isEmpty()){
+    		this.nome = nome;
+    	}
     }
-
+    
     public String getFormaDeVenda(){
-        return this.formaDeVenda;
+    	return this.formaDeVenda;
     }
-
+    
     public void setFormaDeVenda(String formaDeVenda){
-        if (formaDeVenda == "kg" || formaDeVenda == "unidade"){
-            this.formaDeVenda = formaDeVenda;
-        }
+    	if (formaDeVenda == "q" || formaDeVenda == "u"){
+    		this.formaDeVenda = formaDeVenda;
+    	}
     }
+    
 }
