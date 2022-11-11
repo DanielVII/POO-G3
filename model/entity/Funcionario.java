@@ -1,5 +1,5 @@
 package model.entity;
 
-public class Funcionario extends User{
+public class Funcionario extends Usuario{
     
 }

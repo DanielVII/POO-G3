@@ -11,7 +11,7 @@ public class BaseDAO<entity> implements BaseInterDAO<entity>{
 	synchronized public Connection getConnection() {
 		if(con == null) {
 			try {
-				con = DriverManager.getConnection("jdbc:mysql://localhost/academia","POO","melhormateria");
+				con = DriverManager.getConnection("jdbc:postgresql://localhost/Mercado","postgres","Elefanterosa");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -22,37 +22,26 @@ public class BaseDAO<entity> implements BaseInterDAO<entity>{
 
 	@Override
 	public boolean inserir(entity e) {
-		// Para implementar
 		return false;
 	}
 
 	@Override
 	public boolean deletar(entity e) {
-		// Para implementar
 		return false;
 	}
 
 	@Override
 	public boolean alterar(entity e) {
-		// Para implementar
 		return false;
 	}
 
 	@Override
-	public entity findById(entity e) {
-		// Para implementar
+	public ResultSet encontrarPorCampoEspecifico(entity e, String field) {
 		return null;
 	}
-
+	
 	@Override
-	public ResultSet findAll() {
-		// Para implementar
-		return null;
-	}
-
-	@Override
-	public ResultSet findBySpecifiedField(entity e, String field) {
-		// Para implementar
+	public ResultSet encontrarTodos() {
 		return null;
 	}
 
