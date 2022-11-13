@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GerenteController">
+   <children>
+      <ImageView fitHeight="86.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@topo.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="nomeUsuario" layoutX="48.0" layoutY="16.0" prefHeight="17.0" prefWidth="167.0" />
+      <Button fx:id="botaoSair" layoutX="526.0" layoutY="12.0" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: #13ABC4;" text="Sair" />
+   </children>
+</Pane>
