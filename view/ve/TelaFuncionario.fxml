@@ -5,7 +5,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FuncionarioController">
    <children>
       <ImageView fitHeight="86.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
@@ -13,7 +12,7 @@
             <Image url="@topo.png" />
          </image>
       </ImageView>
-      <Label fx:id="nomeUsuario" layoutX="48.0" layoutY="16.0" prefHeight="17.0" prefWidth="167.0" text="nomeUsuario" />
-      <Button fx:id="botaoSair" layoutX="526.0" layoutY="12.0" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: #13ABC4;" text="Sair" />
+      <Label fx:id="nomeUsuario" layoutX="48.0" layoutY="16.0" prefHeight="17.0" prefWidth="167.0" text="nomeFuncionaro" textFill="WHITE" />
+      <Button fx:id="botaoSair" layoutX="526.0" layoutY="12.0" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: #13ABC4;" text="Sair" textFill="WHITE" />
    </children>
 </Pane>
