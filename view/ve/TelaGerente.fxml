@@ -1,19 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GerenteController">
+<Pane fx:id="PaneGerente" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GerenteController">
    <children>
-      <ImageView fitHeight="86.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="49.0" fitWidth="701.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@topo.png" />
          </image>
       </ImageView>
-      <Label fx:id="nomeUsuario" layoutX="48.0" layoutY="16.0" prefHeight="17.0" prefWidth="167.0" text="NomeGerente" textFill="WHITE" />
-      <Button fx:id="botaoSair" layoutX="526.0" layoutY="12.0" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: #13ABC4;" text="Sair" textFill="WHITE" />
+      <Label fx:id="nomeUsuario" layoutX="59.0" layoutY="17.0" prefHeight="17.0" prefWidth="167.0" text="NomeGerente" textFill="WHITE" />
+      <Button fx:id="botaoSair" layoutX="622.0" layoutY="13.0" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: #13ABC4;" text="Sair" textFill="WHITE" />
+      <ImageView fitHeight="369.0" fitWidth="652.0" layoutX="50.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@RectanglePrincipal.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="283.0" fitWidth="556.0" layoutX="77.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@RectangleSecundario.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="160.0" layoutY="140.0" prefWidth="60.0" text="Código">
+         <font>
+            <Font size="13.0" />
+         </font></Label>
+      <Label alignment="CENTER" layoutX="240.0" layoutY="140.0" prefWidth="70.0" text="Marca" />
+      <Label alignment="CENTER" layoutX="80.0" layoutY="140.0" prefHeight="17.0" prefWidth="60.0" text="Nome">
+         <font>
+            <Font size="13.0" />
+         </font></Label>
+      <Label alignment="CENTER" layoutX="320.0" layoutY="140.0" prefWidth="70.0" text="Quantidade" />
+      <Label layoutX="86.0" layoutY="79.0" style="-fx-font-weight: bold;" text="Gerenciamento Do Estoque">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField layoutX="86.0" layoutY="101.0" prefHeight="25.0" prefWidth="233.0" style="-fx-border-radius: 55px;" />
+      <Button fx:id="oi" layoutX="330.0" layoutY="102.0" mnemonicParsing="false" style="-fx-background-color: #06FF6A;" text="Add Remessa " />
+      <Button layoutX="435.0" layoutY="102.0" mnemonicParsing="false" style="-fx-background-color: #06FF6A;" text="Novo Produto" />
+      
+      <Line endX="363.0" layoutX="265.0" layoutY="303.0" startX="-185.0" />
+      <Line endX="363.0" layoutX="265.0" layoutY="347.0" startX="-185.0" />
+      <Line endX="363.0" layoutX="265.0" layoutY="391.0" startX="-185.0" />
+	      <Label alignment="CENTER" layoutX="400.0" layoutY="140.0" prefWidth="70.0" text="Tipo" />
+	      <Label alignment="CENTER" layoutX="480.0" layoutY="140.0" prefWidth="70.0" text="Preço" />
+	      <Line endX="363.0" layoutX="265.0" layoutY="171.0" startX="-185.0" />
+	      <Line endX="363.0" layoutX="265.0" layoutY="215.0" startX="-185.0" />
+	      <Line endX="363.0" layoutX="265.0" layoutY="259.0" startX="-185.0" />
+      <Button fx:id="b1" layoutX="86.0" layoutY="392.0" mnemonicParsing="false" onAction="#MudarPagina" prefHeight="17.0" prefWidth="14.0" style="-fx-background-color: #ffffff;" text="1">
+         <font>
+            <Font size="7.0" />
+         </font>
+      </Button>
+      
    </children>
 </Pane>

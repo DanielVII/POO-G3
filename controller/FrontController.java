@@ -15,8 +15,11 @@ public class FrontController {
 	@FXML private TextField email;
 	@FXML private TextField senha;
 	@FXML private Label erroAutenticacao;
+	@FXML private Label facaLogin;
 	private static UsuarioBO userBo = new UsuarioBO();
 
+
+	
 	public void Auntenticar(ActionEvent event) throws Exception{
 		Usuario user = new Usuario();
 		user.setEmail(email.getText());
@@ -36,6 +39,8 @@ public class FrontController {
 			else erroAutenticacao.setVisible(true);
 		}
 	}
+	
+	
 	
 
 }
