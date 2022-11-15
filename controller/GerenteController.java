@@ -27,7 +27,6 @@ public class GerenteController{
 		nomeUsuario.setText(staticNome);
 		this.PegarTodasAsInfoDeProduto();
 		this.ColocarInfoNaTela();
-		b1.setStyle("-fx-background-color: #add8e6;");
 		this.ColocarBotoesPag();
 		
 	}
@@ -79,9 +78,8 @@ public class GerenteController{
 			
 			Button dele = new Button("Del");
 			dele.setStyle("-fx-background-color: #cc1515;");
-			dele = this.InfoBaseButton(dele, font);
+			
 			Button edit = new Button("Edit");
-			edit = this.InfoBaseButton(edit, font);
 			
 			prod = this.ListaProdutos.get(i);
 			
@@ -123,15 +121,19 @@ public class GerenteController{
 			
 			LayX += 70;
 			
+			dele = this.InfoBaseButton(dele, font);
 			dele.setId(prod.getCodBarras());
 			dele.setLayoutX(LayX);
 			dele.setLayoutY(LayY);
+			dele.setOnAction(action -> Deletar(action));
 			
 			LayX += 38;
 			
+			edit = this.InfoBaseButton(edit, font);
 			edit.setId(prod.getCodBarras());
 			edit.setLayoutX(LayX);
 			edit.setLayoutY(LayY);
+			edit.setOnAction(action -> Editar(action));
 			
 			
 			this.PaneGerente.getChildren().addAll(nome,cod,marca,quant,tipo,preco,dele,edit);
@@ -163,7 +165,14 @@ public class GerenteController{
 			b.setLayoutX(LX);
 			b.setLayoutY(LY);
 			b.setStyle("-fx-background-color: #ffffff;");
-			b.setOnAction(action -> this.MudarPagina(action));
+			b.setOnAction(action -> {
+				try {
+					this.MudarPagina(action);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
 			PaneGerente.getChildren().add(b);
 			
 			LX += 16;
@@ -189,12 +198,39 @@ public class GerenteController{
 		return label;
 	}
 	
-	public void MudarPagina(ActionEvent e) {
+	public void MudarPagina(ActionEvent e) throws Exception {
 		Button b = (Button) e.getSource();
+		this.PaginaAtual = Integer.parseInt(b.getText()); 
 		
-		
+		this.PaneGerente.getChildren().remove(22, this.PaneGerente.getChildren().size());
+		this.ColocarInfoNaTela();
+		this.ColocarBotoesPag();
 	}
+	
 	public void LogOut(ActionEvent event) throws Exception{
 		Telas.telaLogin();
 	}
+
+	public void Deletar(ActionEvent e) {
+		Button b = (Button) e.getSource();
+		Produto prod = new Produto();
+		
+		prod.setCodBarras(b.getId());
+	}
+	
+	public void Editar(ActionEvent e) {
+		Button b = (Button) e.getSource();
+		Produto prod = new Produto();
+		
+		prod.setCodBarras(b.getId());
+	}
+	
+	public void RemersaNova() {
+		// vai atualizar a quantidade de acordo com o cod d barras recebido
+	}
+	
+	public void ProdutoNovo() {
+		//vai add produto novo no BD
+	}
+
 }
