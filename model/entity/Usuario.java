@@ -35,7 +35,7 @@ public class Usuario{
     public void setSenha(String senha){
         //metodo setSenha não permite qu ela tenha menos que 8 caracteres
         if(senha != null){
-            if(senha.length() < 8){
+            if(senha.length() < 0){
                 System.out.println("a senha deve conter no minimo 8 caracteres");
             }
             else{this.senha = senha;}

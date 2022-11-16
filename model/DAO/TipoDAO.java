@@ -103,11 +103,13 @@ public class TipoDAO extends BaseDAO<Tipo>{
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			pst.setInt(1, id_tipo);
 			ResultSet rs = pst.executeQuery();
-			
 			Tipo tipo = new Tipo();
-			tipo.setId(rs.getInt("id_tipo"));
-			tipo.setNome(rs.getString("nome"));
-			tipo.setFormaDeVenda(rs.getString("forma_de_venda"));
+			while(rs.next()) {
+				tipo.setId(rs.getInt("id_tipo"));
+				tipo.setNome(rs.getString("nome"));
+				tipo.setFormaDeVenda(rs.getString("forma_de_venda"));
+			}
+			
 		
 			return tipo;
 		} catch (SQLException ex) {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #13ABC4;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FrontController">
+   <children>
+      <ImageView fitHeight="263.0" fitWidth="212.0" layoutX="194.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Rectangle%2013.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="55.0" fitWidth="55.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@logo.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="email" layoutX="215.0" layoutY="145.0" promptText="Email" />
+      <TextField fx:id="senha" layoutX="215.0" layoutY="187.0" promptText="Senha" />
+      <Label fx:id="facaLogin" layoutX="241.0" layoutY="93.0" prefHeight="43.0" prefWidth="119.0" text="Faça seu login">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="BotaoLogin" layoutX="323.0" layoutY="245.0" mnemonicParsing="false" onAction="#Auntenticar" style="-fx-background-color: #f1f1f1;" text="Entrar" />
+      <Label fx:id="erroAutenticacao" layoutX="215.0" layoutY="221.0" text="Alguma credencial está errada" textFill="#fc7171" visible="false" />
+   </children>
+</Pane>

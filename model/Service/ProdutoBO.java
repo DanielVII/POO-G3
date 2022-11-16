@@ -13,7 +13,7 @@ import model.DAO.ProdutoDAO;
 public class ProdutoBO implements BaseInterBO<Produto>{
 	BaseInterDAO<Produto> dao = new ProdutoDAO();
 	
-	private boolean ExisteNoBD(Produto produto) {
+	public boolean ExisteNoBD(Produto produto) {
 		ResultSet existe = dao.encontrarPorCampoEspecifico(produto, "cod_de_barras");
 		try { 
 			return existe != null && existe.next();

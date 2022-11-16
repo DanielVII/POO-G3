@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FuncionarioController">
+   <children>
+      <ImageView fitHeight="86.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@topo.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="nomeUsuario" layoutX="48.0" layoutY="16.0" prefHeight="17.0" prefWidth="167.0" text="nomeFuncionaro" textFill="WHITE" />
+      <Button fx:id="botaoSair" layoutX="526.0" layoutY="12.0" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: #13ABC4;" text="Sair" textFill="WHITE" />
+      <ImageView fitHeight="333.0" fitWidth="569.0" layoutX="32.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@RectanglePrincipal.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="272.0" layoutY="69.0" text="Comanda">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="48.0" layoutY="105.0" text="Código" />
+      <TextField fx:id="buscar" layoutX="48.0" layoutY="122.0" prefHeight="25.0" prefWidth="174.0" />
+      <Label layoutX="44.0" layoutY="147.0" text="Quantidade" />
+      <TextField fx:id="quantidade" layoutX="48.0" layoutY="164.0" prefHeight="25.0" prefWidth="174.0" />
+      <Label layoutX="48.0" layoutY="243.0" text="Valor Unit." />
+      <ImageView fitHeight="49.0" fitWidth="143.0" layoutX="48.0" layoutY="312.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CaixaPesquisa%20(1).png" />
+         </image></ImageView>
+      <Button layoutX="181.0" layoutY="312.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="91.0" style="-fx-background-color: #06FF6A;" text="Adicionar produto" textAlignment="CENTER" wrapText="true" />
+      <ImageView fitHeight="209.0" fitWidth="238.0" layoutX="300.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CaixaPesquisa%20(3).png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="49.0" fitWidth="152.0" layoutX="300.0" layoutY="311.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CaixaPesquisa%20(1).png" />
+         </image>
+      </ImageView>
+      <Button layoutX="424.0" layoutY="314.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="91.0" style="-fx-background-color: #06FF6A;" text="Finalizar comanda" textAlignment="CENTER" wrapText="true" />
+      <Label fx:id="preco" layoutX="48.0" layoutY="260.0" text="0.00" />
+      <Label fx:id="precoTotal" layoutX="61.0" layoutY="315.0" prefHeight="41.0" prefWidth="75.0" text="0" />
+      <Label layoutX="48.0" layoutY="294.0" text="Preço Total" />
+      <Button layoutX="227.0" layoutY="122.0" mnemonicParsing="false" onAction="#Buscar" text="Procurar" />
+      <Button layoutX="227.0" layoutY="164.0" mnemonicParsing="false" onAction="#calcularPrecoTotal" text="Calcular" />
+      <Label fx:id="mensagemErro" layoutX="47.0" layoutY="192.0" text="*Não a suficiente em estoque" textFill="RED" visible="false" />
+   </children>
+</Pane>
