@@ -23,11 +23,13 @@ public class GerenteController{
 	private List<Produto> ListaProdutos = new ArrayList<Produto>();
 	private int PaginaAtual = 1;
 	
+	private int quantItensPagInicial;
 	public void initialize() {
 		nomeUsuario.setText(staticNome);
 		this.PegarTodasAsInfoDeProduto();
 		this.ColocarInfoNaTela();
 		this.ColocarBotoesPag();
+		this.quantItensPagInicial = PaneGerente.getChildren().size();
 		
 	}
  
@@ -202,7 +204,7 @@ public class GerenteController{
 		Button b = (Button) e.getSource();
 		this.PaginaAtual = Integer.parseInt(b.getText()); 
 		
-		this.PaneGerente.getChildren().remove(22, this.PaneGerente.getChildren().size());
+		this.PaneGerente.getChildren().remove(this.quantItensPagInicial, this.PaneGerente.getChildren().size());
 		this.ColocarInfoNaTela();
 		this.ColocarBotoesPag();
 	}
@@ -216,6 +218,8 @@ public class GerenteController{
 		Produto prod = new Produto();
 		
 		prod.setCodBarras(b.getId());
+		
+		
 	}
 	
 	public void Editar(ActionEvent e) {
