@@ -237,7 +237,99 @@ public class GerenteController{
 		prod.setCodBarras(b.getId());
 	}
 	
-	
+	public void RemersaNova() {
+		ImageView img = new ImageView();
+		img.setFitHeight(283.0);
+		img.setFitWidth(556.0);
+		img.setLayoutX(77.0);
+		img.setLayoutY(133.0);
+		img.setPickOnBounds(true);
+		img.setPreserveRatio(true);
+		img.setImage(new Image("view/ve/RectangleSecundario.png"));
+		
+		Label titulo = new Label("Nova Remessa");
+		titulo.setLayoutX(298.0);
+		titulo.setLayoutY(147.0);
+		titulo.setFont(new Font("Arial", 18.0));
+		
+		this.PaneGerente.getChildren().addAll(img, titulo);
+		
+		List<String> idTextF = new ArrayList<String>();
+		idTextF.add("cod");
+		idTextF.add("quant");
+		
+		List<String> textLabel = new ArrayList<String>();
+		textLabel.add("Cod de barras");
+		textLabel.add("quantidade");
+		
+		Double LY = 194.0;
+		Font font = new Font("Arial", 12);
+		for (int n = 0; n<2;n++) {
+			Label l = new Label(textLabel.get(n));
+			l.setLayoutX(230.0);
+			l.setLayoutY(LY);
+			l.setFont(font);
+			l.setPrefHeight(17.0);
+			l.setPrefWidth(90.0);
+			
+			TextField tf = new TextField();
+			tf.setId(idTextF.get(n));
+			tf.setLayoutX(312);
+			tf.setLayoutY(LY);
+			tf.setPrefHeight(17.0);
+			tf.setPrefWidth(150);
+			
+			this.PaneGerente.getChildren().addAll(l, tf);
+			LY += 34;
+		}
+		
+		Button bV = new Button("Voltar");
+		bV.setPrefWidth(50.0);
+		bV.setLayoutX(273);
+		bV.setLayoutY(291);
+		bV.setOnAction(event -> {
+			this.PaneGerente.getChildren().remove(this.quantItensListados, this.PaneGerente.getChildren().size());
+			
+		});
+		
+		Button bMudar = new Button("Atualizar");
+		bMudar.setPrefWidth(50.0);
+		bMudar.setLayoutX(327);
+		bMudar.setLayoutY(291);
+		bMudar.setOnAction(event -> {
+			TextField tFCode = (TextField) this.PaneGerente.getChildren().get(this.quantItensListados + 3);
+			Produto prod = new Produto();
+			prod.setCodBarras(tFCode.getText());
+			
+			
+			ProdutoBO bo = new ProdutoBO();
+			if (bo.ExisteNoBD(prod)) {
+				List<Produto> lProd = bo.listarPorCampoEspecifico(prod, "cod_de_barras");
+				
+				prod = lProd.get(0);
+				TextField tFQuanti = (TextField) this.PaneGerente.getChildren().get(this.quantItensListados + 5);
+				Integer quantidade = Integer.parseInt(tFQuanti.getText());
+				System.out.println(quantidade);
+				prod.setQuantidade(prod.getQuantidade()+quantidade);
+				
+				bo.alterar(prod);
+				this.PaneGerente.getChildren().remove(this.quantItensPagInicial, this.PaneGerente.getChildren().size());
+				this.PegarTodasAsInfoDeProduto();
+				this.ColocarInfoNaTela();
+				this.ColocarBotoesPag();
+			}else {
+				Label msgErro = new Label();
+				msgErro.setLayoutX(300.0);
+				msgErro.setLayoutY(260.0);
+				msgErro.setFont(font);
+				
+				this.PaneGerente.getChildren().add(msgErro);
+			}
+			
+			
+		});
+		this.PaneGerente.getChildren().addAll( bV, bMudar);
+	}
 
 	
 	
