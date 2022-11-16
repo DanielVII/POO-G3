@@ -43,7 +43,7 @@
          </font>
       </Label>
       <TextField layoutX="86.0" layoutY="101.0" prefHeight="25.0" prefWidth="233.0" style="-fx-border-radius: 55px;" />
-      <Button fx:id="oi" layoutX="330.0" layoutY="102.0" mnemonicParsing="false" style="-fx-background-color: #06FF6A;" text="Add Remessa " />
+      <Button fx:id="oi" layoutX="330.0" layoutY="102.0" mnemonicParsing="false" style="-fx-background-color: #06FF6A;" text="Add Remessa " onAction="#RemersaNova" />
       <Button layoutX="435.0" layoutY="102.0" mnemonicParsing="false" style="-fx-background-color: #06FF6A;" text="Novo Produto" />
       
       <Line endX="363.0" layoutX="265.0" layoutY="303.0" startX="-185.0" />
@@ -59,6 +59,5 @@
             <Font size="7.0" />
          </font>
       </Button>
-      
    </children>
 </Pane>

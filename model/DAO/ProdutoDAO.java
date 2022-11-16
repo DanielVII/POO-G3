@@ -57,7 +57,7 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 	}
     
     public boolean alterar(Produto produto) {
-		String sql = "UPDATE produtos SET nome=?,marca=?,codbarras=?,preco=?,quantidade=? WHERE codbarras=? ";
+		String sql = "UPDATE produtos SET nome=?,marca=?,cod_de_barras=?,preco=?,quantidade=? WHERE cod_de_barras=? ";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			pst.setString(1, produto.getNome());

@@ -24,19 +24,23 @@ public class GerenteController{
 	private int PaginaAtual = 1;
 	
 	private int quantItensPagInicial;
+	private int quantItensListados;
 	public void initialize() {
 		nomeUsuario.setText(staticNome);
+		this.quantItensPagInicial = PaneGerente.getChildren().size();
 		this.PegarTodasAsInfoDeProduto();
 		this.ColocarInfoNaTela();
 		this.ColocarBotoesPag();
-		this.quantItensPagInicial = PaneGerente.getChildren().size();
+		this.quantItensListados = PaneGerente.getChildren().size();;
+		
 		
 	}
- 
+ 	
 	private void PegarTodasAsInfoDeProduto() {
 		ProdutoBO prodBO = new ProdutoBO();
 		this.ListaProdutos = prodBO.listarTodos();
 	}
+	
 	
 	private void ColocarInfoNaTela() {
 		
@@ -146,6 +150,7 @@ public class GerenteController{
 		
 	}
 	
+	
 	private void ColocarBotoesPag(){
 		int tamanhoList = this.ListaProdutos.size();
 		Double totalBotoes = tamanhoList/5.0;
@@ -181,6 +186,7 @@ public class GerenteController{
 		}
 	}
 	
+	
 	private Button InfoBaseButton(Button button, Font font) {
 		button.setPrefHeight(25.0);
 		button.setPrefWidth(37.0);
@@ -190,6 +196,7 @@ public class GerenteController{
 		return button;
 	}
 	
+	
 	private Label InfoBaseLabel(Label label, Font font) {
 		label.setPrefHeight(17.0);
 		label.setPrefWidth(60.0);
@@ -198,27 +205,28 @@ public class GerenteController{
 		label.setFont(font);
 		
 		return label;
-	}
+	}	
 	
 	public void MudarPagina(ActionEvent e) throws Exception {
 		Button b = (Button) e.getSource();
 		this.PaginaAtual = Integer.parseInt(b.getText()); 
+		this.PaneGerente.getChildren().remove(this.quantItensPagInicial,  this.quantItensListados);;
 		
-		this.PaneGerente.getChildren().remove(this.quantItensPagInicial, this.PaneGerente.getChildren().size());
 		this.ColocarInfoNaTela();
 		this.ColocarBotoesPag();
+		this.quantItensListados = PaneGerente.getChildren().size();;
 	}
 	
 	public void LogOut(ActionEvent event) throws Exception{
 		Telas.telaLogin();
 	}
 
+	
 	public void Deletar(ActionEvent e) {
 		Button b = (Button) e.getSource();
 		Produto prod = new Produto();
 		
 		prod.setCodBarras(b.getId());
-		
 		
 	}
 	
@@ -229,9 +237,9 @@ public class GerenteController{
 		prod.setCodBarras(b.getId());
 	}
 	
-	public void RemersaNova() {
-		// vai atualizar a quantidade de acordo com o cod d barras recebido
-	}
+	
+
+	
 	
 	public void ProdutoNovo() {
 		//vai add produto novo no BD
