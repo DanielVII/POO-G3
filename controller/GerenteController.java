@@ -16,8 +16,9 @@ import javafx.scene.text.Font;
 import view.Telas;
 import model.Service.ProdutoBO;
 import model.entity.Produto;
+import Fabrica.ElementoFxmlFabrica;
 
-public class GerenteController{
+public class GerenteController extends ElementoFxmlFabrica{
 	@FXML private Pane PaneGerente;
 	@FXML private Label nomeUsuario;
 	@FXML private Button b1;
@@ -71,20 +72,12 @@ public class GerenteController{
 		
 		
 		Produto prod = new Produto();
+		int TamanhoFont = 12;
+		Double LarguraMax = 60.0; 
+		Double Largura = 60.0;
+		
 		for (int i =start ; i < end; i++) {
-			Label nome = new Label();
-			nome = this.InfoBaseLabel(nome, font);
-			Label cod = new Label();
-			cod = this.InfoBaseLabel(cod, font);
-			Label marca = new Label();
-			marca = this.InfoBaseLabel(marca, font);
-			Label quant = new Label();
-			quant = this.InfoBaseLabel(quant, font);
-			Label tipo = new Label();
-			tipo = this.InfoBaseLabel(tipo, font);
-			Label preco = new Label();
-			preco = this.InfoBaseLabel(preco, font);
-			
+				
 			Button dele = new Button("Del");
 			dele.setStyle("-fx-background-color: #cc1515;");
 			
@@ -94,39 +87,27 @@ public class GerenteController{
 			
 			LayX = 80.0;
 			
-			nome.setText(prod.getNome());
-			nome.setLayoutX(LayX);
-			nome.setLayoutY(LayY);
+			Label nome = LabelFabrica(prod.getNome(), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
 			
-			LayX = LayX + 80;
+			LayX += 80;
 			
-			cod.setText(prod.getCodBarras());
-			cod.setLayoutX(LayX);
-			cod.setLayoutY(LayY);
+			Label cod = LabelFabrica(prod.getCodBarras(), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
 			
-			LayX = LayX + 80;
+			LayX += 80;
 			
-			marca.setText(prod.getMarca());
-			marca.setLayoutX(LayX);
-			marca.setLayoutY(LayY);
+			Label marca = LabelFabrica(prod.getMarca(), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
 			
-			LayX = LayX + 80;
+			LayX += 80;
 			
-			quant.setText(String.valueOf(prod.getQuantidade()));
-			quant.setLayoutX(LayX);
-			quant.setLayoutY(LayY);
+			Label quant = LabelFabrica(String.valueOf(prod.getQuantidade()), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
 			
-			LayX = LayX + 80;
+			LayX += 80;
 			
-			tipo.setText(prod.getTipo().getNome());
-			tipo.setLayoutX(LayX);
-			tipo.setLayoutY(LayY);
+			Label tipo = LabelFabrica(prod.getTipo().getNome(), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
 			
-			LayX = LayX + 80;
+			LayX += 80;
 			
-			preco.setText(String.valueOf(prod.getPreco()));
-			preco.setLayoutX(LayX);
-			preco.setLayoutY(LayY);
+			Label preco = LabelFabrica(String.valueOf(prod.getPreco()), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
 			
 			LayX += 70;
 			
@@ -200,15 +181,7 @@ public class GerenteController{
 	}
 	
 	
-	private Label InfoBaseLabel(Label label, Font font) {
-		label.setPrefHeight(17.0);
-		label.setPrefWidth(60.0);
-		label.maxWidth(60.0);
-		label.setAlignment(Pos.CENTER);
-		label.setFont(font);
-		
-		return label;
-	}	
+
 	
 	public void MudarPagina(ActionEvent e) throws Exception {
 		Button b = (Button) e.getSource();
@@ -250,10 +223,7 @@ public class GerenteController{
 		img.setPreserveRatio(true);
 		img.setImage(new Image("view/ve/RectangleSecundario.png"));
 		
-		Label titulo = new Label("Nova Remessa");
-		titulo.setLayoutX(298.0);
-		titulo.setLayoutY(147.0);
-		titulo.setFont(new Font("Arial", 18.0));
+		Label titulo = LabelFabrica("Nova Remessa", 298.0, 147.0, 18, false);
 		
 		this.PaneGerente.getChildren().addAll(img, titulo);
 		
@@ -268,12 +238,7 @@ public class GerenteController{
 		Double LY = 194.0;
 		Font font = new Font("Arial", 12);
 		for (int n = 0; n<2;n++) {
-			Label l = new Label(textLabel.get(n));
-			l.setLayoutX(230.0);
-			l.setLayoutY(LY);
-			l.setFont(font);
-			l.setPrefHeight(17.0);
-			l.setPrefWidth(90.0);
+			Label l = LabelFabrica(textLabel.get(n), 230.0, LY, 12, false, 90.0, 90.0);
 			
 			TextField tf = new TextField();
 			tf.setId(idTextF.get(n));
