@@ -11,7 +11,7 @@ import model.DAO.BaseInterDAO;
 import model.DAO.ProdutoDAO;
 
 public class ProdutoBO implements BaseInterBO<Produto>{
-	BaseInterDAO<Produto> dao = new ProdutoDAO();
+	ProdutoDAO dao = new ProdutoDAO();
 	
 	public boolean ExisteNoBD(Produto produto) {
 		ResultSet existe = dao.encontrarPorCampoEspecifico(produto, "cod_de_barras");
@@ -60,6 +60,35 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 	public List<Produto> listarPorCampoEspecifico(Produto produto, String campo){
 		List<Produto> Produtos = new ArrayList<Produto>();
 		ResultSet rs = dao.encontrarPorCampoEspecifico(produto, campo);
+		try {
+			while(rs.next()) {
+				Produto produtoLista = new Produto();
+				produtoLista.setNome(rs.getString("nome"));
+				produtoLista.setMarca(rs.getString("marca"));
+				produtoLista.setCodBarras(rs.getString("cod_de_barras"));
+				produtoLista.setQuantidade(rs.getInt("quantidade"));
+				produtoLista.setPreco(rs.getDouble("preco"));
+				
+				int idTipo = rs.getInt("id_tipo");
+				Tipo tipo = new Tipo();
+				TipoBO bo = new TipoBO();
+				
+				tipo = bo.BuscarTodaInfoSoComId(idTipo);
+				
+				produtoLista.setTipo(tipo);
+				Produtos.add(produtoLista);
+			}
+			return Produtos;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Produto> listarPorCampoEspecificoIncompleto(Produto produto, String campo){
+		List<Produto> Produtos = new ArrayList<Produto>();
+		ResultSet rs = dao.encontrarPorCampoEspecificoIncompleto(produto, campo);
 		try {
 			while(rs.next()) {
 				Produto produtoLista = new Produto();

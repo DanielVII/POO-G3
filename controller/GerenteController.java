@@ -3,10 +3,12 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -21,7 +23,10 @@ import Fabrica.ElementoFxmlFabrica;
 public class GerenteController extends ElementoFxmlFabrica{
 	@FXML private Pane PaneGerente;
 	@FXML private Label nomeUsuario;
+	@FXML private TextField Pesquisa;
+	@FXML private ChoiceBox<String> EscolhaPesquisa;
 	@FXML private Button b1;
+	
 	public static String staticNome;
 	
 	private List<Produto> ListaProdutos = new ArrayList<Produto>();
@@ -29,22 +34,17 @@ public class GerenteController extends ElementoFxmlFabrica{
 	
 	private int quantItensPagInicial;
 	private int quantItensListados;
+	
+	private ProdutoBO prodBO = new ProdutoBO();
 	public void initialize() {
 		nomeUsuario.setText(staticNome);
 		this.quantItensPagInicial = PaneGerente.getChildren().size();
-		this.PegarTodasAsInfoDeProduto();
-		this.ColocarInfoNaTela();
-		this.ColocarBotoesPag();
-		this.quantItensListados = PaneGerente.getChildren().size();;
+		this.GerarTela(true);
+		
+		this.EscolhaPesquisa.setItems(FXCollections.observableArrayList("Nome", "Cod. Barras", "Marca"));;
 		
 		
 	}
- 	
-	private void PegarTodasAsInfoDeProduto() {
-		ProdutoBO prodBO = new ProdutoBO();
-		this.ListaProdutos = prodBO.listarTodos();
-	}
-	
 	
 	private void ColocarInfoNaTela() {
 		
@@ -60,7 +60,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 		int start;
 		int end;
 		if (tamanhoList - posicaoFinalListaPag < 0) {
-			//Esse caso vai ocorrer quando for a ultima pagina e o total d eitens da mesma for - de 5
+			//Esse caso vai ocorrer quando for a ultima pagina e o total de itens da mesma for - de 5
 			int x = posicaoFinalListaPag - tamanhoList;
 			end = tamanhoList;
 			start = end - (5 - x);
@@ -134,7 +134,6 @@ public class GerenteController extends ElementoFxmlFabrica{
 		
 	}
 	
-	
 	private void ColocarBotoesPag(){
 		int tamanhoList = this.ListaProdutos.size();
 		Double totalBotoes = tamanhoList/5.0;
@@ -151,7 +150,6 @@ public class GerenteController extends ElementoFxmlFabrica{
 			Button b = new Button(Integer.toString(i+2));
 			b.setPrefHeight(17.0);
 			b.setPrefWidth(14.0);
-			b.setAlignment(Pos.CENTER);
 			b.setFont(new Font("Arial", 7));
 			b.setLayoutX(LX);
 			b.setLayoutY(LY);
@@ -170,6 +168,12 @@ public class GerenteController extends ElementoFxmlFabrica{
 		}
 	}
 	
+	private void GerarTela(boolean ColetarInfoNova) {
+		if (ColetarInfoNova) this.ListaProdutos = this.prodBO.listarTodos();
+		this.ColocarInfoNaTela();
+		this.ColocarBotoesPag();
+		this.quantItensListados = PaneGerente.getChildren().size();;
+	}
 	
 	private Button InfoBaseButton(Button button, Font font) {
 		button.setPrefHeight(25.0);
@@ -180,24 +184,18 @@ public class GerenteController extends ElementoFxmlFabrica{
 		return button;
 	}
 	
-	
-
-	
 	public void MudarPagina(ActionEvent e) throws Exception {
 		Button b = (Button) e.getSource();
 		this.PaginaAtual = Integer.parseInt(b.getText()); 
-		this.PaneGerente.getChildren().remove(this.quantItensPagInicial,  this.quantItensListados);;
+		this.PaneGerente.getChildren().remove(this.quantItensPagInicial,  this.quantItensListados);
 		
-		this.ColocarInfoNaTela();
-		this.ColocarBotoesPag();
-		this.quantItensListados = PaneGerente.getChildren().size();;
+		this.GerarTela(false);
 	}
 	
 	public void LogOut(ActionEvent event) throws Exception{
 		Telas.telaLogin();
 	}
 
-	
 	public void Deletar(ActionEvent e) {
 		Button b = (Button) e.getSource();
 		Produto prod = new Produto();
@@ -282,9 +280,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 				
 				bo.alterar(prod);
 				this.PaneGerente.getChildren().remove(this.quantItensPagInicial, this.PaneGerente.getChildren().size());
-				this.PegarTodasAsInfoDeProduto();
-				this.ColocarInfoNaTela();
-				this.ColocarBotoesPag();
+				this.GerarTela(true);
 			}else {
 				Label msgErro = new Label();
 				msgErro.setLayoutX(300.0);
@@ -299,10 +295,36 @@ public class GerenteController extends ElementoFxmlFabrica{
 		this.PaneGerente.getChildren().addAll( bV, bMudar);
 	}
 
-	
-	
 	public void ProdutoNovo() {
 		//vai add produto novo no BD
 	}
 
+	public void Pesquisar() {
+		if (this.Pesquisa.getText() == "") {
+			this.PaneGerente.getChildren().remove(this.quantItensPagInicial,  this.quantItensListados);
+			this.GerarTela(true);
+			return;
+		}
+		String NomeColuna;
+		Produto prod = new Produto();
+		switch(this.EscolhaPesquisa.getValue()) {
+			case "Nome":
+				prod.setNome(this.Pesquisa.getText());
+				NomeColuna = "nome";
+				break;
+			case "Cod. Barras":
+				prod.setCodBarras(this.Pesquisa.getText());
+				NomeColuna = "cod_de_barras";
+				break;
+			case "Marca":
+				prod.setMarca(this.Pesquisa.getText());
+				NomeColuna = "marca";
+				break;
+			default:
+				return;
+		}
+		this.ListaProdutos = this.prodBO.listarPorCampoEspecificoIncompleto(prod, NomeColuna);
+		this.PaneGerente.getChildren().remove(this.quantItensPagInicial,  this.quantItensListados);
+		this.GerarTela(false);
+	}
 }

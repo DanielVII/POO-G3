@@ -124,4 +124,33 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 		
 	}
 	
+	public ResultSet encontrarPorCampoEspecificoIncompleto(Produto produto, String field) {
+		String sql = "SELECT * FROM produtos WHERE " + field +" LIKE ? ;";
+		try {
+			PreparedStatement pst = getConnection().prepareStatement(sql);
+			switch (field) {
+			case "nome":
+				pst.setString(1, "%" + produto.getNome() + "%");
+				break;
+				
+			case "marca":
+				pst.setString(1, "%" + produto.getMarca() + "%");
+				break;
+				
+			case "cod_de_barras":
+				pst.setString(1, "%" + produto.getCodBarras() + "%");
+				break;
+				
+			
+			}
+			
+			ResultSet rs = pst.executeQuery();
+			return rs;
+		
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
 }
