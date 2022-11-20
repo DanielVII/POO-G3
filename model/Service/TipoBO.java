@@ -50,10 +50,8 @@ public class TipoBO implements BaseInterBO<Tipo>{
 	}
 	
 	public boolean alterar (Tipo tipo){
-		if (this.ExisteNoBD(tipo)) {
-			if (dao.alterar(tipo) == true)return true;
-			else return false;
-		}else return false;
+		if (dao.alterar(tipo) == true)return true;
+		else return false;
 	}
 
 	public List<Tipo> listarPorCampoEspecifico(Tipo tipo, String campo){
@@ -65,7 +63,6 @@ public class TipoBO implements BaseInterBO<Tipo>{
 				tipoLista.setId(rs.getInt("id_tipo"));
 				tipoLista.setNome(rs.getString("nome"));
 				tipoLista.setFormaDeVenda(rs.getString("forma_de_venda"));
-				
 				Tipos.add(tipoLista);
 			}
 			return Tipos;

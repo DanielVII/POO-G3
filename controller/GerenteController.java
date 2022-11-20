@@ -6,18 +6,18 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
+import javafx.scene.paint.Color;
 import view.Telas;
 import model.Service.ProdutoBO;
+import model.Service.TipoBO;
 import model.entity.Produto;
+import model.entity.Tipo;
 import Fabrica.ElementoFxmlFabrica;
 
 public class GerenteController extends ElementoFxmlFabrica{
@@ -25,7 +25,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 	@FXML private Label nomeUsuario;
 	@FXML private TextField Pesquisa;
 	@FXML private ChoiceBox<String> EscolhaPesquisa;
-	@FXML private Button b1;
+	@FXML private Button pagina1;
 	
 	public static String staticNome;
 	
@@ -36,25 +36,33 @@ public class GerenteController extends ElementoFxmlFabrica{
 	private int quantItensListados;
 	
 	private ProdutoBO prodBO = new ProdutoBO();
+	
 	public void initialize() {
 		nomeUsuario.setText(staticNome);
 		this.quantItensPagInicial = PaneGerente.getChildren().size();
 		this.GerarTela(true);
 		
-		this.EscolhaPesquisa.setItems(FXCollections.observableArrayList("Nome", "Cod. Barras", "Marca"));;
+		this.pagina1.setStyle("-fx-background-color:#d3d3d3 ;");
 		
+		this.EscolhaPesquisa.setItems(FXCollections.observableArrayList(
+				"Nome", 
+				"Cod. Barras", 
+				"Marca"));
 		
 	}
 	
-	private void ColocarInfoNaTela() {
+	private void RemoveInfo(boolean tudo) {
+		if (tudo) this.PaneGerente.getChildren().remove(this.quantItensPagInicial,  this.PaneGerente.getChildren().size());
+		else this.PaneGerente.getChildren().remove(this.quantItensListados,  this.PaneGerente.getChildren().size());
+	}
+	
+ 	private void ColocarInfoNaTela() {
 		
 		int tamanhoList = this.ListaProdutos.size();
 		
-		Font font = new Font("Arial", 12);
-		
-		
 		Double LayX;
 		Double LayY = 182.0;
+		
 		int posicaoFinalListaPag = this.PaginaAtual * 5;
 		
 		int start;
@@ -73,60 +81,114 @@ public class GerenteController extends ElementoFxmlFabrica{
 		
 		Produto prod = new Produto();
 		int TamanhoFont = 12;
-		Double LarguraMax = 60.0; 
-		Double Largura = 60.0;
+		Double LarguraLabel = 60.0;
+		boolean Centralizar = true;
+		
+		Double LarguraButton = 37.0;
 		
 		for (int i =start ; i < end; i++) {
-				
-			Button dele = new Button("Del");
-			dele.setStyle("-fx-background-color: #cc1515;");
-			
-			Button edit = new Button("Edit");
-			
+		
 			prod = this.ListaProdutos.get(i);
 			
 			LayX = 80.0;
 			
-			Label nome = LabelFabrica(prod.getNome(), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
+			Label nome = LabelFabrica(
+					prod.getNome(), 
+					LayX, 
+					LayY, 
+					TamanhoFont, 
+					Centralizar, 
+					LarguraLabel
+					);
 			
 			LayX += 80;
 			
-			Label cod = LabelFabrica(prod.getCodBarras(), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
+			Label cod = LabelFabrica(
+					prod.getCodBarras(), 
+					LayX, LayY, 
+					TamanhoFont, 
+					Centralizar, 
+					LarguraLabel
+					);
 			
 			LayX += 80;
 			
-			Label marca = LabelFabrica(prod.getMarca(), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
+			Label marca = LabelFabrica(
+					prod.getMarca(), 
+					LayX, 
+					LayY, 
+					TamanhoFont, 
+					Centralizar, 
+					LarguraLabel
+					);
 			
 			LayX += 80;
 			
-			Label quant = LabelFabrica(String.valueOf(prod.getQuantidade()), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
+			Label quant = LabelFabrica(
+					String.valueOf(prod.getQuantidade()), 
+					LayX, 
+					LayY, 
+					TamanhoFont, 
+					Centralizar, 
+					LarguraLabel);
 			
 			LayX += 80;
 			
-			Label tipo = LabelFabrica(prod.getTipo().getNome(), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
+			Label tipo = LabelFabrica(
+					prod.getTipo().getNome(), 
+					LayX, 
+					LayY, 
+					TamanhoFont, 
+					Centralizar, 
+					LarguraLabel
+					);
 			
 			LayX += 80;
 			
-			Label preco = LabelFabrica(String.valueOf(prod.getPreco()), LayX, LayY, TamanhoFont, true, LarguraMax, Largura);
+			Label preco = LabelFabrica(
+					String.valueOf(prod.getPreco()), 
+					LayX, 
+					LayY, 
+					TamanhoFont, 
+					Centralizar, 
+					LarguraLabel
+					);
 			
 			LayX += 70;
 			
-			dele = this.InfoBaseButton(dele, font);
-			dele.setId(prod.getCodBarras());
-			dele.setLayoutX(LayX);
-			dele.setLayoutY(LayY);
-			dele.setOnAction(action -> Deletar(action));
+			Button dele = ButtonFabrica(
+					"Del", 
+					prod.getCodBarras(), 
+					LayX, 
+					LayY, 
+					TamanhoFont, 
+					LarguraButton, 
+					"#cc1515"
+					);
+			dele.setOnAction(action -> DeletarProduto(action));
 			
 			LayX += 38;
 			
-			edit = this.InfoBaseButton(edit, font);
-			edit.setId(prod.getCodBarras());
-			edit.setLayoutX(LayX);
-			edit.setLayoutY(LayY);
-			edit.setOnAction(action -> Editar(action));
+			Button edit = ButtonFabrica(
+					"Edit", 
+					prod.getCodBarras(), 
+					LayX, 
+					LayY, 
+					TamanhoFont, 
+					LarguraButton
+					);
+			edit.setOnAction(action -> EditarProduto(action));
 			
-			
-			this.PaneGerente.getChildren().addAll(nome,cod,marca,quant,tipo,preco,dele,edit);
+			this.PaneGerente.getChildren().addAll(
+					nome,
+					cod,
+					marca,
+					quant,
+					tipo,
+					preco,
+					dele,
+					edit
+					);
 			
 			LayY += 45;
 		}
@@ -146,14 +208,19 @@ public class GerenteController extends ElementoFxmlFabrica{
 		}
 		Double LX = 102.0;
 		Double LY = 392.0;
+		
 		for (Integer i = 0; i < totalBotoesInt; i++) {
-			Button b = new Button(Integer.toString(i+2));
+			
+			Button b = ButtonFabrica(
+					Integer.toString(i+2),
+					"pagina"+Integer.toString(i+2),
+					LX,
+					LY,
+					7,
+					14.0,
+					"#ffffff"
+					);
 			b.setPrefHeight(17.0);
-			b.setPrefWidth(14.0);
-			b.setFont(new Font("Arial", 7));
-			b.setLayoutX(LX);
-			b.setLayoutY(LY);
-			b.setStyle("-fx-background-color: #ffffff;");
 			b.setOnAction(action -> {
 				try {
 					this.MudarPagina(action);
@@ -175,28 +242,27 @@ public class GerenteController extends ElementoFxmlFabrica{
 		this.quantItensListados = PaneGerente.getChildren().size();;
 	}
 	
-	private Button InfoBaseButton(Button button, Font font) {
-		button.setPrefHeight(25.0);
-		button.setPrefWidth(37.0);
-		button.setAlignment(Pos.CENTER);
-		button.setFont(font);
-		
-		return button;
-	}
-	
 	public void MudarPagina(ActionEvent e) throws Exception {
+		Button botaoAnterior = (Button) this.PaneGerente.lookup("#pagina"+this.PaginaAtual);
+		botaoAnterior.setStyle("-fx-background-color:#ffffff ;");
+		
 		Button b = (Button) e.getSource();
-		this.PaginaAtual = Integer.parseInt(b.getText()); 
-		this.PaneGerente.getChildren().remove(this.quantItensPagInicial,  this.quantItensListados);
+		this.PaginaAtual = Integer.parseInt(b.getText());
+		
+		this.RemoveInfo(true);
 		
 		this.GerarTela(false);
+		
+		Button botaoFocado = (Button) this.PaneGerente.lookup("#pagina"+this.PaginaAtual);
+		botaoFocado.setStyle("-fx-background-color:#d3d3d3 ;");
 	}
 	
 	public void LogOut(ActionEvent event) throws Exception{
 		Telas.telaLogin();
 	}
 
-	public void Deletar(ActionEvent e) {
+	public void DeletarProduto(ActionEvent e) {
+		//implementar
 		Button b = (Button) e.getSource();
 		Produto prod = new Produto();
 		
@@ -204,7 +270,8 @@ public class GerenteController extends ElementoFxmlFabrica{
 		
 	}
 	
-	public void Editar(ActionEvent e) {
+	public void EditarProduto(ActionEvent e) {
+		//implementar
 		Button b = (Button) e.getSource();
 		Produto prod = new Produto();
 		
@@ -212,18 +279,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 	}
 	
 	public void RemersaNova() {
-		ImageView img = new ImageView();
-		img.setFitHeight(283.0);
-		img.setFitWidth(556.0);
-		img.setLayoutX(77.0);
-		img.setLayoutY(133.0);
-		img.setPickOnBounds(true);
-		img.setPreserveRatio(true);
-		img.setImage(new Image("view/ve/RectangleSecundario.png"));
-		
-		Label titulo = LabelFabrica("Nova Remessa", 298.0, 147.0, 18, false);
-		
-		this.PaneGerente.getChildren().addAll(img, titulo);
+		this.BaseParaNovaPagina("NovaRemessa");;
 		
 		List<String> idTextF = new ArrayList<String>();
 		idTextF.add("cod");
@@ -234,36 +290,49 @@ public class GerenteController extends ElementoFxmlFabrica{
 		textLabel.add("quantidade");
 		
 		Double LY = 194.0;
-		Font font = new Font("Arial", 12);
 		for (int n = 0; n<2;n++) {
-			Label l = LabelFabrica(textLabel.get(n), 230.0, LY, 12, false, 90.0, 90.0);
+			Label l = LabelFabrica(
+					textLabel.get(n), 
+					230.0, 
+					LY,
+					12, 
+					false, 
+					90.0
+					);
 			
-			TextField tf = new TextField();
-			tf.setId(idTextF.get(n));
-			tf.setLayoutX(312);
-			tf.setLayoutY(LY);
-			tf.setPrefHeight(17.0);
-			tf.setPrefWidth(150);
+			TextField tf = TextFieldFabrica(
+					idTextF.get(n),
+					150.0,
+					17.0,
+					312.0,
+					LY
+					);
 			
 			this.PaneGerente.getChildren().addAll(l, tf);
 			LY += 34;
 		}
-		
-		Button bV = new Button("Voltar");
-		bV.setPrefWidth(50.0);
-		bV.setLayoutX(273);
-		bV.setLayoutY(291);
+		Button bV = ButtonFabrica(
+				"Voltar",
+				"Voltar",
+				273.0,
+				291.0,
+				12,
+				50.0
+				);
 		bV.setOnAction(event -> {
-			this.PaneGerente.getChildren().remove(this.quantItensListados, this.PaneGerente.getChildren().size());
-			
+			this.RemoveInfo(false);
 		});
 		
-		Button bMudar = new Button("Atualizar");
-		bMudar.setPrefWidth(50.0);
-		bMudar.setLayoutX(327);
-		bMudar.setLayoutY(291);
+		Button bMudar = ButtonFabrica(
+				"Atualizar",
+				"Atualizar",
+				327.0,
+				291.0,
+				12,
+				50.0
+				);
 		bMudar.setOnAction(event -> {
-			TextField tFCode = (TextField) this.PaneGerente.getChildren().get(this.quantItensListados + 3);
+			TextField tFCode = (TextField) this.PaneGerente.lookup("#cod"); 
 			Produto prod = new Produto();
 			prod.setCodBarras(tFCode.getText());
 			
@@ -273,24 +342,24 @@ public class GerenteController extends ElementoFxmlFabrica{
 				List<Produto> lProd = bo.listarPorCampoEspecifico(prod, "cod_de_barras");
 				
 				prod = lProd.get(0);
-				TextField tFQuanti = (TextField) this.PaneGerente.getChildren().get(this.quantItensListados + 5);
+				TextField tFQuanti = (TextField) this.PaneGerente.lookup("#quant");
 				Integer quantidade = Integer.parseInt(tFQuanti.getText());
-				System.out.println(quantidade);
 				prod.setQuantidade(prod.getQuantidade()+quantidade);
 				
 				bo.alterar(prod);
-				this.PaneGerente.getChildren().remove(this.quantItensPagInicial, this.PaneGerente.getChildren().size());
+				this.RemoveInfo(true);
 				this.GerarTela(true);
 			}else {
-				Label msgErro = new Label();
-				msgErro.setLayoutX(300.0);
-				msgErro.setLayoutY(260.0);
-				msgErro.setFont(font);
-				
+				Label msgErro = LabelFabrica(
+						"O cod de barras não existe no armazém",
+						250.0,
+						260.0,
+						12,
+						false,
+						300.0);
+				msgErro.setTextFill(Color.RED);
 				this.PaneGerente.getChildren().add(msgErro);
 			}
-			
-			
 		});
 		this.PaneGerente.getChildren().addAll( bV, bMudar);
 	}
@@ -301,7 +370,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 
 	public void Pesquisar() {
 		if (this.Pesquisa.getText() == "") {
-			this.PaneGerente.getChildren().remove(this.quantItensPagInicial,  this.quantItensListados);
+			this.RemoveInfo(true);
 			this.GerarTela(true);
 			return;
 		}
@@ -324,7 +393,483 @@ public class GerenteController extends ElementoFxmlFabrica{
 				return;
 		}
 		this.ListaProdutos = this.prodBO.listarPorCampoEspecificoIncompleto(prod, NomeColuna);
-		this.PaneGerente.getChildren().remove(this.quantItensPagInicial,  this.quantItensListados);
+		this.RemoveInfo(true);
 		this.GerarTela(false);
+	}
+
+	public void GerenciarTipo() {
+		TipoBO BOTipo = new TipoBO();
+		
+		this.BaseParaNovaPagina("Gerenciar Tipos");
+		
+		List<Tipo> TodosTipos = BOTipo.listarTodos();
+		
+		List<String> itens = new ArrayList<String>();
+		
+		for(int x=0;x<TodosTipos.size();x++) itens.add(TodosTipos.get(x).getNome());
+			
+		Double LX = 270.0;
+		Double LY = 192.0;
+	
+		Label nomeTipo = LabelFabrica(
+				"Nome",
+				LX, LY,
+				12, 
+				false
+				);
+		LX += 50;
+		ChoiceBox CBNome = ChoiceBoxFabrica(
+				"ChoiceNomeTipo",
+				LX,
+				LY,
+				150.0,
+				itens
+				);
+
+		Double TamanhoBotao = 70.0;
+		LY += 100;
+		
+		Button NovoTipo = ButtonFabrica(
+				"Novo",
+				"BotaoNovoTipo",
+				LX,
+				LY,
+				12,
+				TamanhoBotao,
+				"#06FF6A"
+				);
+		NovoTipo.setOnAction(event -> this.TipoNovo());
+		
+		Double DiferencaEntreBotoes = 30.0;
+		
+		LY += DiferencaEntreBotoes;
+		
+		Button EditarTipo = ButtonFabrica(
+				"Editar",
+				"BotaoEditarTipo",
+				LX,
+				LY,
+				12,
+				TamanhoBotao
+				);
+		EditarTipo.setOnAction(event -> this.EditarTipo());
+		
+		LY += DiferencaEntreBotoes;
+		
+		Button DeletarTipo = ButtonFabrica(
+				"Deletar",
+				"BotaoDeletarTipo",
+				LX,
+				LY,
+				12,
+				TamanhoBotao,
+				"#cc1515"
+				);
+		DeletarTipo.setOnAction(event -> this.DeletarTipo());
+		
+		LY += DiferencaEntreBotoes;
+		
+		Button Voltar = ButtonFabrica(
+				"Voltar",
+				"BotaoVoltarTipo",
+				LX,
+				LY,
+				12,
+				TamanhoBotao
+				);
+		Voltar.setOnAction(event -> {
+			this.RemoveInfo(false);
+		});
+		
+		this.PaneGerente.getChildren().addAll(
+				nomeTipo, 
+				CBNome, 
+				NovoTipo,
+				EditarTipo,
+				DeletarTipo,
+				Voltar
+				);
+	}
+	
+	private void TipoNovo() {
+		this.BaseParaNovaPagina("Criar Novo Tipo");
+		
+		Double LX = 270.0;
+		Double LY = 192.0;
+		
+		Double DistanciaLabelField = 50.0;
+		Double DistanciaEntreOBJ = 30.0;
+		
+		Label nome = LabelFabrica(
+				"Nome",
+				LX, LY,
+				12, 
+				false
+				);
+		
+		LX += DistanciaLabelField;
+		
+		TextField EscolhaNome = TextFieldFabrica(
+				"EscolhaNomeTipo",
+				150.0,
+				15.0,
+				LX, LY
+				);
+		
+		LX -= DistanciaLabelField;
+		LY += DistanciaEntreOBJ;
+		
+		Label forma = LabelFabrica(
+				"Forma",
+				LX, LY,
+				12, 
+				false
+				);
+		
+		LX += DistanciaLabelField;
+		
+		List<String> itens = new ArrayList<String>();
+		itens.add("Quilo");
+		itens.add("Unidade");
+		
+		
+		ChoiceBox CBForma = ChoiceBoxFabrica(
+				"ChoiceNome",
+				LX,
+				LY,
+				150.0,
+				itens
+				);
+		
+		LY += 80;
+		
+		Double TamanhoButton = 70.0;
+		
+		Button adicionar = ButtonFabrica(
+				"Adicionar",
+				"AdicionarTipo",
+				LX,
+				LY,
+				12,
+				TamanhoButton,
+				"#06FF6A"
+				);
+		adicionar.setOnAction(event->{
+			TipoBO BOTipo = new TipoBO();
+			
+			Tipo tipo = new Tipo();
+			
+			String CampoNome = EscolhaNome.getText();
+			String FormaCompra = (String) CBForma.getValue();
+			
+			if (CampoNome == "" || FormaCompra == null) {
+				Label msgErro = LabelFabrica(
+						"Algum item errado",
+						300.0,
+						250.0,
+						12,
+						false
+						);
+				msgErro.setTextFill(Color.RED);
+				this.PaneGerente.getChildren().add(msgErro);
+			}else {
+				tipo.setNome(CampoNome);
+				switch (FormaCompra) {
+					case "Quilo": 
+						tipo.setFormaDeVenda("q");
+						break;
+					case "Unidade":
+						tipo.setFormaDeVenda("u");
+						break;
+					default:
+						throw new IllegalArgumentException("Unexpected value: " + CampoNome);
+				}
+				
+				if (BOTipo.inserir(tipo)) {
+					this.RemoveInfo(false);
+				}else {
+					Label msgErro = LabelFabrica(
+							"Item já existe no armazém",
+							300.0,
+							280.0,
+							12,
+							false
+							);
+					msgErro.setTextFill(Color.RED);
+					this.PaneGerente.getChildren().add(msgErro);
+				}
+			}
+		});
+		
+		LY += DistanciaEntreOBJ;
+		
+		Button voltar = ButtonFabrica(
+				"Voltar",
+				"VoltarTipo",
+				LX,
+				LY,
+				12,
+				TamanhoButton
+				);
+		voltar.setOnAction(event ->{
+			this.RemoveInfo(true);
+			this.GerarTela(false);
+		});
+		
+		this.PaneGerente.getChildren().addAll(
+				nome, EscolhaNome,
+				forma, CBForma,
+				adicionar, voltar
+				);
+	}
+	
+	private void EditarTipo() {
+		ChoiceBox<String> CB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipo");
+		String nomeTipo = (String) CB.getValue();
+		
+		TipoBO BOTipo = new TipoBO();
+		
+		if (nomeTipo == null) {
+			Label msgErro = LabelFabrica(
+					"Escolha um Tipo",
+					300.0,
+					250.0,
+					12,
+					false
+					);
+			msgErro.setTextFill(Color.RED);
+			this.PaneGerente.getChildren().add(msgErro);
+		}else {
+			
+			Tipo tipoOriginal = new Tipo();
+			tipoOriginal.setNome(nomeTipo);
+			
+			List<Tipo> listTipoOriginal= BOTipo.listarPorCampoEspecifico(tipoOriginal, "nome");
+			Tipo tipoRecebido = listTipoOriginal.get(0);
+			tipoOriginal.setNome(tipoRecebido.getNome());
+			tipoOriginal.setId(tipoRecebido.getId());
+			tipoOriginal.setFormaDeVenda(tipoRecebido.getFormaDeVenda());
+			
+			this.BaseParaNovaPagina("Editar Tipo");
+			
+			Double LX = 270.0;
+			Double LY = 192.0;
+			
+			Double DistanciaLabelField = 50.0;
+			Double DistanciaEntreOBJ = 30.0;
+			
+			Label nome = LabelFabrica(
+					"Nome",
+					LX, LY,
+					12, 
+					false
+					);
+			
+			LX += DistanciaLabelField;
+			
+			TextField EscolhaNome = TextFieldFabrica(
+					"EscolhaNomeTipo",
+					150.0,
+					15.0,
+					LX, LY
+					);
+			EscolhaNome.setText(nomeTipo);
+			LX -= DistanciaLabelField;
+			LY += DistanciaEntreOBJ;
+			
+			Label forma = LabelFabrica(
+					"Forma",
+					LX, LY,
+					12, 
+					false
+					);
+			
+			LX += DistanciaLabelField;
+			
+			List<String> itens = new ArrayList<String>();
+			itens.add("Quilo");
+			itens.add("Unidade");
+			
+			
+			ChoiceBox CBForma = ChoiceBoxFabrica(
+					"ChoiceNome",
+					LX,
+					LY,
+					150.0,
+					itens
+					);
+			
+			String item;
+			
+			switch (tipoOriginal.getFormaDeVenda()) {
+				case "q": 
+					item = "Quilo";
+					break;
+				case "u":
+					item = "Unidade";
+					break;
+				default:
+					throw new IllegalArgumentException("Unexpected value: " + tipoOriginal.getFormaDeVenda());
+		}
+			
+			CBForma.setValue(item);
+			
+			LY += 80;
+			
+			Double TamanhoButton = 70.0;
+			
+			Button editar = ButtonFabrica(
+					"Editar",
+					"EditarTipo",
+					LX,
+					LY,
+					12,
+					TamanhoButton,
+					"#06FF6A"
+					);
+			editar.setOnAction(event->{
+				
+				
+				Tipo tipo = new Tipo();
+				
+				String CampoNome = EscolhaNome.getText();
+				String FormaCompra = (String) CBForma.getValue();
+				
+				if (CampoNome == "" || FormaCompra == null) {
+					Label msgErro = LabelFabrica(
+							"Algum item errado",
+							300.0,
+							250.0,
+							12,
+							false
+							);
+					msgErro.setTextFill(Color.RED);
+					this.PaneGerente.getChildren().add(msgErro);
+				}else {
+					tipo.setNome(CampoNome);
+					switch (FormaCompra) {
+						case "Quilo": 
+							tipo.setFormaDeVenda("q");
+							break;
+						case "Unidade":
+							tipo.setFormaDeVenda("u");
+							break;
+						default:
+							throw new IllegalArgumentException("Unexpected value: " + CampoNome);
+					}
+					tipo.setId(tipoOriginal.getId());
+					
+					if (BOTipo.alterar(tipo)) {
+						this.RemoveInfo(true);
+					}else {
+						Label msgErro = LabelFabrica(
+								"Erro",
+								300.0,
+								280.0,
+								12,
+								false
+								);
+						msgErro.setTextFill(Color.RED);
+						this.PaneGerente.getChildren().add(msgErro);
+					}
+				}
+			});
+			
+			LY += DistanciaEntreOBJ;
+			
+			Button voltar = ButtonFabrica(
+					"Voltar",
+					"VoltarTipo",
+					LX,
+					LY,
+					12,
+					TamanhoButton
+					);
+			voltar.setOnAction(event ->{
+				this.RemoveInfo(true);
+				this.GerarTela(false);
+			});
+			
+			this.PaneGerente.getChildren().addAll(
+					nome, EscolhaNome,
+					forma, CBForma,
+					editar, voltar
+					);
+	}
+		
+	}
+	
+	private void DeletarTipo() {
+		ChoiceBox<String> CB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipo");
+		String nomeTipo = (String) CB.getValue();
+		
+		TipoBO BOTipo = new TipoBO();
+		
+		if (nomeTipo == null) {
+			Label msgErro = LabelFabrica(
+					"Escolha um Tipo",
+					300.0,
+					250.0,
+					12,
+					false
+					);
+			msgErro.setTextFill(Color.RED);
+			this.PaneGerente.getChildren().add(msgErro);
+		}else {
+			this.BaseParaNovaPagina("Voce quer mesmo deletar " + nomeTipo + "?");
+			
+			Double LX = 300.0;
+			Double LY = 192.0;
+			Double TamanhoButton = 80.0;
+			
+			Button voltar = ButtonFabrica(
+					"Voltar",
+					"VoltarTipo",
+					LX,
+					LY,
+					12,
+					TamanhoButton
+					);
+			voltar.setOnAction(event ->{
+				this.RemoveInfo(true);
+				this.GerarTela(false);
+			});
+			
+					
+			Button deletar = ButtonFabrica(
+					"Deletar",
+					"DeletarTipo",
+					LX,
+					LY,
+					12,
+					TamanhoButton,
+					"#cc1515"
+					);
+			deletar.setOnAction(event->{
+				
+			});
+			
+			
+		}
+	}
+	
+  	private void BaseParaNovaPagina(String titulo) {
+		ImageView IV = ImageFabrica(
+						556.0,
+						283.0,
+						77.0,
+						133.0,
+						"view/ve/RectangleSecundario.png"
+						);
+				
+		Label t = LabelFabrica(
+					titulo, 
+					298.0, 
+					147.0, 
+					18, 
+					false
+					);
+		
+		this.PaneGerente.getChildren().addAll(IV, t);
 	}
 }

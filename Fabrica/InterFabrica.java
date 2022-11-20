@@ -1,6 +1,9 @@
 package Fabrica;
 
+import java.util.List;
+
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -20,24 +23,23 @@ public interface InterFabrica {
 			Double LayY,
 			int TamanhoFont,
 			boolean centralizar,
+			Double Largura);
+	
+	public Button ButtonFabrica(
+			String Nome, 
+			String Id,
+			Double LayX,
+			Double LayY,
+			int TamanhoFont,
+			Double Largura);
+	
+	public Button ButtonFabrica(
+			String Nome, 
+			String Id,
+			Double LayX,
+			Double LayY,
+			int TamanhoFont,
 			Double Largura,
-			Double LarguraMaxima);
-	
-	public Button ButtonFabrica(
-			String Nome, 
-			String Id,
-			Double LayX,
-			Double LayY,
-			int TamanhoFont,
-			Double LarguraMaxima);
-	
-	public Button ButtonFabrica(
-			String Nome, 
-			String Id,
-			Double LayX,
-			Double LayY,
-			int TamanhoFont,
-			Double LarguraMaxima,
 			String CorHexadecimal);
 	
 	public TextField TextFieldFabrica( 
@@ -54,5 +56,13 @@ public interface InterFabrica {
 			Double LayX,
 			Double LayY,
 			String CaminhoImg);
+	
+	public ChoiceBox ChoiceBoxFabrica(
+			String id,
+			Double LayX,
+			Double LayY,
+			Double Largura,
+			List<String> ListaValores
+			);
 	
 }

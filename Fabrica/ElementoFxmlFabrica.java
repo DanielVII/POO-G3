@@ -1,7 +1,11 @@
 package Fabrica;
 
+import java.util.List;
+
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -22,30 +26,31 @@ public class ElementoFxmlFabrica implements InterFabrica{
 	
 	@Override
 	public Label LabelFabrica(String Nome, Double LayX, Double LayY, int TamanhoFont, boolean centralizar,
-			Double Largura, Double LarguraMaxima) {
+			Double Largura) {
 		Label lb = this.LabelFabrica(Nome, LayX, LayY, TamanhoFont, centralizar);
-		lb.setMaxWidth(LarguraMaxima);
+		lb.setMaxWidth(Largura);
 		lb.setPrefWidth(Largura);
 		return lb;
 	}
 
 	@Override
 	public Button ButtonFabrica(String Nome, String Id, Double LayX, Double LayY, int TamanhoFont,
-			Double LarguraMaxima) {
+			Double Largura) {
 		Button bt = new Button(Nome);
 		bt.setId(Id);
 		bt.setLayoutX(LayX);
 		bt.setLayoutY(LayY);
-		bt.setMaxWidth(LarguraMaxima);
+		bt.setPrefWidth(Largura);
+		bt.setMaxWidth(Largura);
 		bt.setFont(new Font("Arial", TamanhoFont));
 		// TODO Auto-generated method stub
 		return bt;
 	}
 	
 	@Override
-	public Button ButtonFabrica(String Nome, String Id, Double LayX, Double LayY, int TamanhoFont, Double LarguraMaxima,
-			String CorHexadecimal) {
-		Button bt = this.ButtonFabrica(Nome, Id, LayX, LayY, TamanhoFont, LarguraMaxima, CorHexadecimal);
+	public Button ButtonFabrica(String Nome, String Id, Double LayX, Double LayY, int TamanhoFont, Double Largura,
+			 String CorHexadecimal) {
+		Button bt = this.ButtonFabrica(Nome, Id, LayX, LayY, TamanhoFont, Largura);
 		bt.setStyle("-fx-background-color:" + CorHexadecimal + " ;");
 		// TODO Auto-generated method stub
 		return bt;
@@ -69,10 +74,24 @@ public class ElementoFxmlFabrica implements InterFabrica{
 		iv.setLayoutX(LayX);
 		iv.setLayoutY(LayY);
 		iv.setImage(new Image(CaminhoImg));
-		iv.prefHeight(Altura);
-		iv.prefWidth(Largura);
+		iv.setFitHeight(Altura);
+		iv.setFitWidth(Largura);
+		iv.setPickOnBounds(true);
+		iv.setPreserveRatio(true);
 		// TODO Auto-generated method stub
 		return iv;
+	}
+
+	@Override
+	public ChoiceBox ChoiceBoxFabrica(String id, Double LayX, Double LayY, Double Largura, List<String> ListaValores) {
+		ChoiceBox<String> CB = new ChoiceBox<String>();
+		CB.setId(id);
+		CB.setLayoutX(LayX);
+		CB.setLayoutY(LayY);
+		CB.setPrefWidth(Largura);
+		String a = ListaValores.get(0);
+		CB.setItems(FXCollections.observableArrayList(ListaValores));
+		return CB;
 	}
 
 	

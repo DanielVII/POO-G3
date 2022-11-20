@@ -43,8 +43,8 @@
          </font>
       </Label>
       <TextField fx:id="Pesquisa" layoutX="86.0" layoutY="101.0" onAction="#Pesquisar" prefHeight="25.0" prefWidth="233.0" style="-fx-border-radius: 55px;" />
-      <Button fx:id="oi" layoutX="428.0" layoutY="90.0" mnemonicParsing="false" style="-fx-background-color: #06FF6A;" text="Add Remessa " />
-      <Button layoutX="529.0" layoutY="90.0" mnemonicParsing="false" style="-fx-background-color: #06FF6A;" text="Novo Produto" />
+      <Button fx:id="oi" layoutX="425.0" layoutY="72.0" mnemonicParsing="false" onAction="#RemersaNova" style="-fx-background-color: #06FF6A;" text="Add Remessa " />
+      <Button layoutX="529.0" layoutY="72.0" mnemonicParsing="false" style="-fx-background-color: #06FF6A;" text="Novo Produto" />
       
       <Line endX="363.0" layoutX="265.0" layoutY="303.0" startX="-185.0" />
       <Line endX="363.0" layoutX="265.0" layoutY="347.0" startX="-185.0" />
@@ -54,11 +54,12 @@
 	      <Line endX="363.0" layoutX="265.0" layoutY="171.0" startX="-185.0" />
 	      <Line endX="363.0" layoutX="265.0" layoutY="215.0" startX="-185.0" />
 	      <Line endX="363.0" layoutX="265.0" layoutY="259.0" startX="-185.0" />
-      <Button fx:id="b1" layoutX="86.0" layoutY="392.0" mnemonicParsing="false" onAction="#MudarPagina" prefHeight="17.0" prefWidth="14.0" style="-fx-background-color: #ffffff;" text="1">
+      <Button fx:id="pagina1" layoutX="86.0" layoutY="392.0" mnemonicParsing="false" onAction="#MudarPagina" prefHeight="17.0" prefWidth="14.0" style="-fx-background-color: #ffffff;" text="1">
          <font>
             <Font size="7.0" />
          </font>
       </Button>
       <ChoiceBox fx:id="EscolhaPesquisa" layoutX="326.0" layoutY="101.0" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #ffffff;" />
+      <Button layoutX="499.0" layoutY="103.0" mnemonicParsing="false" onAction="#GerenciarTipo" style="-fx-background-color: #1e03a4;" text="Tipos" textFill="WHITE" />
    </children>
 </Pane>
