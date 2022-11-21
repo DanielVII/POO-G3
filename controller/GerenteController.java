@@ -831,11 +831,10 @@ public class GerenteController extends ElementoFxmlFabrica{
 					TamanhoButton
 					);
 			voltar.setOnAction(event ->{
-				this.RemoveInfo(true);
-				this.GerarTela(false);
+				this.RemoveInfo(false);
 			});
 			
-					
+			LX += 90;		
 			Button deletar = ButtonFabrica(
 					"Deletar",
 					"DeletarTipo",
@@ -846,9 +845,25 @@ public class GerenteController extends ElementoFxmlFabrica{
 					"#cc1515"
 					);
 			deletar.setOnAction(event->{
-				
+				Tipo tipo = new Tipo();
+				tipo.setNome(nomeTipo);
+				if (BOTipo.deletar(tipo)) {
+					this.RemoveInfo(true);
+					this.GerarTela(true);
+				}else {
+					Label msgErro = LabelFabrica(
+							"Esse tipo está associado com algum Produto",
+							300.0,
+							250.0,
+							12,
+							false
+							);
+					msgErro.setTextFill(Color.RED);
+					this.PaneGerente.getChildren().add(msgErro);
+				}
 			});
 			
+			this.PaneGerente.getChildren().addAll(deletar, voltar);
 			
 		}
 	}
@@ -869,6 +884,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					18, 
 					false
 					);
+		
 		
 		this.PaneGerente.getChildren().addAll(IV, t);
 	}
