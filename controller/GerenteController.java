@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -36,6 +37,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 	private int quantItensListados;
 	
 	private ProdutoBO prodBO = new ProdutoBO();
+	private TipoBO BOTipo = new TipoBO();
 	
 	public void initialize() {
 		nomeUsuario.setText(staticNome);
@@ -61,7 +63,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 		int tamanhoList = this.ListaProdutos.size();
 		
 		Double LayX;
-		Double LayY = 182.0;
+		Double LayY = 205.0;
 		
 		int posicaoFinalListaPag = this.PaginaAtual * 5;
 		
@@ -81,8 +83,10 @@ public class GerenteController extends ElementoFxmlFabrica{
 		
 		Produto prod = new Produto();
 		int TamanhoFont = 12;
-		Double LarguraLabel = 60.0;
+		Double LarguraLabel = 80.0;
 		boolean Centralizar = true;
+		
+		Double distanciaEntreElementos = 90.0;
 		
 		Double LarguraButton = 37.0;
 		
@@ -90,7 +94,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 		
 			prod = this.ListaProdutos.get(i);
 			
-			LayX = 80.0;
+			LayX = 170.0;
 			
 			Label nome = LabelFabrica(
 					prod.getNome(), 
@@ -101,7 +105,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					LarguraLabel
 					);
 			
-			LayX += 80;
+			LayX += distanciaEntreElementos;
 			
 			Label cod = LabelFabrica(
 					prod.getCodBarras(), 
@@ -111,7 +115,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					LarguraLabel
 					);
 			
-			LayX += 80;
+			LayX += distanciaEntreElementos;
 			
 			Label marca = LabelFabrica(
 					prod.getMarca(), 
@@ -122,7 +126,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					LarguraLabel
 					);
 			
-			LayX += 80;
+			LayX += distanciaEntreElementos;
 			
 			Label quant = LabelFabrica(
 					String.valueOf(prod.getQuantidade()), 
@@ -132,7 +136,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					Centralizar, 
 					LarguraLabel);
 			
-			LayX += 80;
+			LayX += distanciaEntreElementos;
 			
 			Label tipo = LabelFabrica(
 					prod.getTipo().getNome(), 
@@ -143,7 +147,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					LarguraLabel
 					);
 			
-			LayX += 80;
+			LayX += distanciaEntreElementos;
 			
 			Label preco = LabelFabrica(
 					String.valueOf(prod.getPreco()), 
@@ -154,7 +158,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					LarguraLabel
 					);
 			
-			LayX += 70;
+			LayX += 90;
 			
 			Button dele = ButtonFabrica(
 					"Del", 
@@ -167,7 +171,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					);
 			dele.setOnAction(action -> DeletarProduto(action));
 			
-			LayX += 38;
+			LayX += 40;
 			
 			Button edit = ButtonFabrica(
 					"Edit", 
@@ -206,8 +210,8 @@ public class GerenteController extends ElementoFxmlFabrica{
 				totalBotoesInt -= 1; // como já existe um botão na pagina inicial, é preciso tirar ele
 			}
 		}
-		Double LX = 102.0;
-		Double LY = 392.0;
+		Double LX = 179.0;
+		Double LY = 421.0;
 		
 		for (Integer i = 0; i < totalBotoesInt; i++) {
 			
@@ -279,7 +283,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 	}
 	
 	public void RemersaNova() {
-		this.BaseParaNovaPagina("NovaRemessa");;
+		this.BaseParaNovaPagina("Nova Remessa");;
 		
 		List<String> idTextF = new ArrayList<String>();
 		idTextF.add("cod");
@@ -287,50 +291,63 @@ public class GerenteController extends ElementoFxmlFabrica{
 		
 		List<String> textLabel = new ArrayList<String>();
 		textLabel.add("Cod de barras");
-		textLabel.add("quantidade");
+		textLabel.add("Quantidade");
 		
+		Double LX = 360.0;
 		Double LY = 194.0;
+		Double distanciaElementos = 100.0;
+		
 		for (int n = 0; n<2;n++) {
 			Label l = LabelFabrica(
 					textLabel.get(n), 
-					230.0, 
+					LX, 
 					LY,
 					12, 
 					false, 
 					90.0
 					);
 			
+			LX +=distanciaElementos;
+			
 			TextField tf = TextFieldFabrica(
 					idTextF.get(n),
 					150.0,
 					17.0,
-					312.0,
+					LX,
 					LY
 					);
 			
 			this.PaneGerente.getChildren().addAll(l, tf);
+			LX -= distanciaElementos;
 			LY += 34;
 		}
+		
+		Double tamanhoBotao = 80.0;
+		
+		LX += 50;
 		Button bV = ButtonFabrica(
 				"Voltar",
 				"Voltar",
-				273.0,
+				LX,
 				291.0,
 				12,
-				50.0
+				tamanhoBotao
 				);
 		bV.setOnAction(event -> {
 			this.RemoveInfo(false);
 		});
 		
+		LX += distanciaElementos;
+		
 		Button bMudar = ButtonFabrica(
 				"Atualizar",
 				"Atualizar",
-				327.0,
+				LX,
 				291.0,
 				12,
-				50.0
+				tamanhoBotao
 				);
+		bMudar.setStyle("-fx-background-color:#06FF6A;");
 		bMudar.setOnAction(event -> {
 			TextField tFCode = (TextField) this.PaneGerente.lookup("#cod"); 
 			Produto prod = new Produto();
@@ -352,7 +369,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 			}else {
 				Label msgErro = LabelFabrica(
 						"O cod de barras não existe no armazém",
-						250.0,
+						370.0,
 						260.0,
 						12,
 						false,
@@ -365,9 +382,111 @@ public class GerenteController extends ElementoFxmlFabrica{
 	}
 
 	public void ProdutoNovo() {
-		//vai add produto novo no BD
+		this.BaseTelaNovoEEditarProduto("Produto Novo");
 	}
 
+	public void BaseTelaNovoEEditarProduto(String titulo) {
+		this.BaseParaNovaPagina(titulo);
+		
+		List<Tipo> TodosTipos = BOTipo.listarTodos();
+		
+		List<String> itens = new ArrayList<String>();
+		
+		for(int x=0;x<TodosTipos.size();x++) itens.add(TodosTipos.get(x).getNome());
+			
+		Double LX = 340.0;
+		Double LY = 192.0;
+		Double DistanciaLabelEField = 75.0;
+		Double DistanciaLabelELabel = 35.0;
+		Double LarguraField = 150.0;
+	
+		Label nomeTipo = LabelFabrica(
+				"Tipo",
+				LX, LY+5,
+				12, 
+				false,
+				70.0
+				);
+		nomeTipo.setAlignment(Pos.CENTER_RIGHT);
+		
+		LX += DistanciaLabelEField;
+		
+		ChoiceBox CBNomeTipo = ChoiceBoxFabrica(
+				"ChoiceNomeTipoProduto",
+				LX,
+				LY,
+				LarguraField,
+				itens
+				);
+		
+		Button NovoTipo = ButtonFabrica(
+				"+",
+				"NovoTipoEmProduto",
+				LX + 150, LY,
+				12,
+				10.0);
+		NovoTipo.setOnAction(event->{
+			this.NovoTipo();
+		});
+		
+		LX -= DistanciaLabelEField;
+		LY += DistanciaLabelELabel;
+		
+		this.PaneGerente.getChildren().addAll(
+				nomeTipo, CBNomeTipo, NovoTipo);
+		
+		List<String> LabelNome = new ArrayList<String>();
+		LabelNome.add("Nome");
+		LabelNome.add("Marca");
+		LabelNome.add("Cod.");
+		LabelNome.add("Preço");
+		LabelNome.add("Quantidade");
+		
+		List<String> IdField = new ArrayList<String>();
+		IdField.add("FieldNomeProduto");
+		IdField.add("FieldMarcaProduto");
+		IdField.add("FieldCodProduto");
+		IdField.add("FieldPrecoProduto");
+		IdField.add("FieldQuantidadeProduto");
+		
+		for (int x=0;x<IdField.size();x++) {
+			Label lb = LabelFabrica(
+					LabelNome.get(x),
+					LX,LY+5,
+					12,
+					false,
+					70.0
+					);
+			lb.setAlignment(Pos.CENTER_RIGHT);
+			
+			LX += DistanciaLabelEField;
+			
+			TextField tf = TextFieldFabrica(
+					IdField.get(x),
+					LarguraField,
+					13.0,
+					LX,LY
+					);
+			this.PaneGerente.getChildren().addAll(lb, tf);
+			
+			LX -= DistanciaLabelEField;
+			LY += DistanciaLabelELabel;
+		}
+		Button Voltar = ButtonFabrica(
+				"Voltar",
+				"Voltar",
+				LX+40,LY+13,
+				13,
+				70.0
+				);
+		Voltar.setOnAction(event->{
+			this.RemoveInfo(false);
+		});
+		
+		this.PaneGerente.getChildren().add(Voltar);
+		
+	}
+	
 	public void Pesquisar() {
 		if (this.Pesquisa.getText() == "") {
 			this.RemoveInfo(true);
@@ -398,8 +517,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 	}
 
 	public void GerenciarTipo() {
-		TipoBO BOTipo = new TipoBO();
-		
+
 		this.BaseParaNovaPagina("Gerenciar Tipos");
 		
 		List<Tipo> TodosTipos = BOTipo.listarTodos();
@@ -408,7 +526,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 		
 		for(int x=0;x<TodosTipos.size();x++) itens.add(TodosTipos.get(x).getNome());
 			
-		Double LX = 270.0;
+		Double LX = 380.0;
 		Double LY = 192.0;
 	
 		Label nomeTipo = LabelFabrica(
@@ -438,7 +556,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 				TamanhoBotao,
 				"#06FF6A"
 				);
-		NovoTipo.setOnAction(event -> this.TipoNovo());
+		NovoTipo.setOnAction(event -> this.NovoTipo());
 		
 		Double DiferencaEntreBotoes = 30.0;
 		
@@ -491,59 +609,12 @@ public class GerenteController extends ElementoFxmlFabrica{
 				);
 	}
 	
-	private void TipoNovo() {
-		this.BaseParaNovaPagina("Criar Novo Tipo");
-		
-		Double LX = 270.0;
-		Double LY = 192.0;
-		
-		Double DistanciaLabelField = 50.0;
-		Double DistanciaEntreOBJ = 30.0;
-		
-		Label nome = LabelFabrica(
-				"Nome",
-				LX, LY,
-				12, 
-				false
-				);
-		
-		LX += DistanciaLabelField;
-		
-		TextField EscolhaNome = TextFieldFabrica(
-				"EscolhaNomeTipo",
-				150.0,
-				15.0,
-				LX, LY
-				);
-		
-		LX -= DistanciaLabelField;
-		LY += DistanciaEntreOBJ;
-		
-		Label forma = LabelFabrica(
-				"Forma",
-				LX, LY,
-				12, 
-				false
-				);
-		
-		LX += DistanciaLabelField;
-		
-		List<String> itens = new ArrayList<String>();
-		itens.add("Quilo");
-		itens.add("Unidade");
-		
-		
-		ChoiceBox CBForma = ChoiceBoxFabrica(
-				"ChoiceNome",
-				LX,
-				LY,
-				150.0,
-				itens
-				);
-		
-		LY += 80;
+	private void NovoTipo() {
+		this.BaseTelaNovoEEditarTipo("Novo Tipo");
 		
 		Double TamanhoButton = 70.0;
+		Double LX = 450.0;
+		Double LY = 300.0;
 		
 		Button adicionar = ButtonFabrica(
 				"Adicionar",
@@ -555,9 +626,10 @@ public class GerenteController extends ElementoFxmlFabrica{
 				"#06FF6A"
 				);
 		adicionar.setOnAction(event->{
-			TipoBO BOTipo = new TipoBO();
-			
 			Tipo tipo = new Tipo();
+			
+			TextField EscolhaNome = (TextField) this.PaneGerente.lookup("#EscolhaNomeTipo");
+			ChoiceBox CBForma = (ChoiceBox) this.PaneGerente.lookup("#ChoiceForma");
 			
 			String CampoNome = EscolhaNome.getText();
 			String FormaCompra = (String) CBForma.getValue();
@@ -565,7 +637,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 			if (CampoNome == "" || FormaCompra == null) {
 				Label msgErro = LabelFabrica(
 						"Algum item errado",
-						300.0,
+						430.0,
 						250.0,
 						12,
 						false
@@ -585,12 +657,12 @@ public class GerenteController extends ElementoFxmlFabrica{
 						throw new IllegalArgumentException("Unexpected value: " + CampoNome);
 				}
 				
-				if (BOTipo.inserir(tipo)) {
+				if (this.BOTipo.inserir(tipo)) {
 					this.RemoveInfo(false);
 				}else {
 					Label msgErro = LabelFabrica(
 							"Item já existe no armazém",
-							300.0,
+							430.0,
 							280.0,
 							12,
 							false
@@ -601,38 +673,17 @@ public class GerenteController extends ElementoFxmlFabrica{
 			}
 		});
 		
-		LY += DistanciaEntreOBJ;
-		
-		Button voltar = ButtonFabrica(
-				"Voltar",
-				"VoltarTipo",
-				LX,
-				LY,
-				12,
-				TamanhoButton
-				);
-		voltar.setOnAction(event ->{
-			this.RemoveInfo(true);
-			this.GerarTela(false);
-		});
-		
-		this.PaneGerente.getChildren().addAll(
-				nome, EscolhaNome,
-				forma, CBForma,
-				adicionar, voltar
-				);
+		this.PaneGerente.getChildren().add(adicionar);
 	}
 	
 	private void EditarTipo() {
-		ChoiceBox<String> CB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipo");
+		ChoiceBox CB = (ChoiceBox) this.PaneGerente.lookup("#ChoiceNomeTipo");
 		String nomeTipo = (String) CB.getValue();
-		
-		TipoBO BOTipo = new TipoBO();
 		
 		if (nomeTipo == null) {
 			Label msgErro = LabelFabrica(
 					"Escolha um Tipo",
-					300.0,
+					430.0,
 					250.0,
 					12,
 					false
@@ -640,6 +691,8 @@ public class GerenteController extends ElementoFxmlFabrica{
 			msgErro.setTextFill(Color.RED);
 			this.PaneGerente.getChildren().add(msgErro);
 		}else {
+			
+			this.BaseTelaNovoEEditarTipo("Editar Tipo");
 			
 			Tipo tipoOriginal = new Tipo();
 			tipoOriginal.setNome(nomeTipo);
@@ -650,9 +703,97 @@ public class GerenteController extends ElementoFxmlFabrica{
 			tipoOriginal.setId(tipoRecebido.getId());
 			tipoOriginal.setFormaDeVenda(tipoRecebido.getFormaDeVenda());
 			
-			this.BaseParaNovaPagina("Editar Tipo");
+			TextField EscolhaNome = (TextField) this.PaneGerente.lookup("#EscolhaNomeTipo");
+			EscolhaNome.setText(nomeTipo);
 			
-			Double LX = 270.0;
+			String item;
+			
+			switch (tipoOriginal.getFormaDeVenda()) {
+				case "q": 
+					item = "Quilo";
+					break;
+				case "u":
+					item = "Unidade";
+					break;
+				default:
+					throw new IllegalArgumentException("Unexpected value: " + tipoOriginal.getFormaDeVenda());
+		}
+			
+			ChoiceBox CBForma = (ChoiceBox) this.PaneGerente.lookup("#ChoiceForma");
+			
+			CBForma.setValue(item);
+			
+			Double TamanhoButton = 70.0;
+			Double LX = 450.0;
+			Double LY = 300.0;
+			
+			Button editar = ButtonFabrica(
+					"Editar",
+					"EditarTipo",
+					LX,
+					LY,
+					12,
+					TamanhoButton,
+					"#06FF6A"
+					);
+			editar.setOnAction(event->{
+
+				Tipo tipo = new Tipo();
+				
+				String CampoNome = EscolhaNome.getText();
+				String FormaCompra = (String) CBForma.getValue();
+				
+				if (CampoNome == "" || FormaCompra == null) {
+					Label msgErro = LabelFabrica(
+							"Algum item errado",
+							430.0,
+							250.0,
+							12,
+							false
+							);
+					msgErro.setTextFill(Color.RED);
+					this.PaneGerente.getChildren().add(msgErro);
+				}else {
+					tipo.setNome(CampoNome);
+					
+					switch (FormaCompra) {
+						case "Quilo": 
+							tipo.setFormaDeVenda("q");
+							break;
+						case "Unidade":
+							tipo.setFormaDeVenda("u");
+							break;
+						default:
+							throw new IllegalArgumentException("Unexpected value: " + CampoNome);
+					}
+					tipo.setId(tipoOriginal.getId());
+					
+					if (BOTipo.alterar(tipo)) {
+						this.RemoveInfo(true);
+						this.GerarTela(true);
+					}else {
+						Label msgErro = LabelFabrica(
+								"Erro",
+								430.0,
+								280.0,
+								12,
+								false
+								);
+						msgErro.setTextFill(Color.RED);
+						this.PaneGerente.getChildren().add(msgErro);
+					}
+				}
+			});
+		
+			this.PaneGerente.getChildren().add(editar);		
+	}
+		
+	}
+	
+	private void BaseTelaNovoEEditarTipo(String titulo) {
+			this.BaseParaNovaPagina(titulo);
+			
+			Double LX = 400.0;
 			Double LY = 192.0;
 			
 			Double DistanciaLabelField = 50.0;
@@ -673,7 +814,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					15.0,
 					LX, LY
 					);
-			EscolhaNome.setText(nomeTipo);
+			
 			LX -= DistanciaLabelField;
 			LY += DistanciaEntreOBJ;
 			
@@ -690,90 +831,17 @@ public class GerenteController extends ElementoFxmlFabrica{
 			itens.add("Quilo");
 			itens.add("Unidade");
 			
-			
 			ChoiceBox CBForma = ChoiceBoxFabrica(
-					"ChoiceNome",
+					"ChoiceForma",
 					LX,
 					LY,
 					150.0,
 					itens
 					);
 			
-			String item;
-			
-			switch (tipoOriginal.getFormaDeVenda()) {
-				case "q": 
-					item = "Quilo";
-					break;
-				case "u":
-					item = "Unidade";
-					break;
-				default:
-					throw new IllegalArgumentException("Unexpected value: " + tipoOriginal.getFormaDeVenda());
-		}
-			
-			CBForma.setValue(item);
-			
 			LY += 80;
 			
 			Double TamanhoButton = 70.0;
-			
-			Button editar = ButtonFabrica(
-					"Editar",
-					"EditarTipo",
-					LX,
-					LY,
-					12,
-					TamanhoButton,
-					"#06FF6A"
-					);
-			editar.setOnAction(event->{
-				
-				
-				Tipo tipo = new Tipo();
-				
-				String CampoNome = EscolhaNome.getText();
-				String FormaCompra = (String) CBForma.getValue();
-				
-				if (CampoNome == "" || FormaCompra == null) {
-					Label msgErro = LabelFabrica(
-							"Algum item errado",
-							300.0,
-							250.0,
-							12,
-							false
-							);
-					msgErro.setTextFill(Color.RED);
-					this.PaneGerente.getChildren().add(msgErro);
-				}else {
-					tipo.setNome(CampoNome);
-					switch (FormaCompra) {
-						case "Quilo": 
-							tipo.setFormaDeVenda("q");
-							break;
-						case "Unidade":
-							tipo.setFormaDeVenda("u");
-							break;
-						default:
-							throw new IllegalArgumentException("Unexpected value: " + CampoNome);
-					}
-					tipo.setId(tipoOriginal.getId());
-					
-					if (BOTipo.alterar(tipo)) {
-						this.RemoveInfo(true);
-					}else {
-						Label msgErro = LabelFabrica(
-								"Erro",
-								300.0,
-								280.0,
-								12,
-								false
-								);
-						msgErro.setTextFill(Color.RED);
-						this.PaneGerente.getChildren().add(msgErro);
-					}
-				}
-			});
 			
 			LY += DistanciaEntreOBJ;
 			
@@ -789,14 +857,13 @@ public class GerenteController extends ElementoFxmlFabrica{
 				this.RemoveInfo(true);
 				this.GerarTela(false);
 			});
-			
+				
 			this.PaneGerente.getChildren().addAll(
 					nome, EscolhaNome,
 					forma, CBForma,
-					editar, voltar
+					voltar
 					);
-	}
-		
+			
 	}
 	
 	private void DeletarTipo() {
@@ -808,7 +875,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 		if (nomeTipo == null) {
 			Label msgErro = LabelFabrica(
 					"Escolha um Tipo",
-					300.0,
+					430.0,
 					250.0,
 					12,
 					false
@@ -818,8 +885,8 @@ public class GerenteController extends ElementoFxmlFabrica{
 		}else {
 			this.BaseParaNovaPagina("Voce quer mesmo deletar " + nomeTipo + "?");
 			
-			Double LX = 300.0;
-			Double LY = 192.0;
+			Double LX = 380.0;
+			Double LY = 200.0;
 			Double TamanhoButton = 80.0;
 			
 			Button voltar = ButtonFabrica(
@@ -853,8 +920,8 @@ public class GerenteController extends ElementoFxmlFabrica{
 				}else {
 					Label msgErro = LabelFabrica(
 							"Esse tipo está associado com algum Produto",
-							300.0,
-							250.0,
+							360.0,
+							180.0,
 							12,
 							false
 							);
@@ -870,19 +937,20 @@ public class GerenteController extends ElementoFxmlFabrica{
 	
   	private void BaseParaNovaPagina(String titulo) {
 		ImageView IV = ImageFabrica(
-						556.0,
-						283.0,
-						77.0,
-						133.0,
+						659.0,
+						321.0,
+						150.0,
+						150.0,
 						"view/ve/RectangleSecundario.png"
 						);
 				
 		Label t = LabelFabrica(
 					titulo, 
-					298.0, 
-					147.0, 
+					150.0, 
+					155.0, 
 					18, 
-					false
+					true,
+					650.0
 					);
 		
 		
