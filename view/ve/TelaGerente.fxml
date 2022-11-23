@@ -67,5 +67,6 @@
       </Button>
       <ChoiceBox fx:id="EscolhaPesquisa" layoutX="395.0" layoutY="112.0" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #ffffff;" />
       <Button layoutX="645.0" layoutY="102.0" mnemonicParsing="false" onAction="#GerenciarTipo" style="-fx-background-color: #1e03a4;" text="Tipos" textFill="WHITE" />
+      <ScrollBar layoutX="916.0" layoutY="183.0" orientation="VERTICAL" />
    </children>
 </Pane>

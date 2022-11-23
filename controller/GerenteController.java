@@ -311,7 +311,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 				this.GerarTela(true);
 			}else {
 				Label msgErro = LabelFabrica(
-						"Esse tipo está associado com algum Produto",
+						"Erro no bd",
 						360.0,
 						180.0,
 						12,
@@ -424,7 +424,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 		});
 		this.PaneGerente.getChildren().addAll( bV, bMudar);
 	}
-
+ 
 	public void EditarProduto(ActionEvent e) {
 		Button b = (Button) e.getSource();
 		Produto prod = new Produto();
