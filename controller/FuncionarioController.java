@@ -21,7 +21,6 @@ import Fabrica.ElementoFxmlFabrica;
 
 public class FuncionarioController extends ElementoFxmlFabrica{
 	@FXML private Pane PaneFuncionario;
-	
 	@FXML private Label nomeUsuario;
 	@FXML private TextField buscar;
 	@FXML private TextField quantidade;
@@ -32,15 +31,20 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	@FXML private Label mensagemErro;
 	
 	
-	private List<List<Object>> produtosNaComanda = new ArrayList<List<Object>>();
+	private DecimalFormat df = new DecimalFormat("#.##");
+	
+	private List<List<Object>> produtosNaComanda = new ArrayList<List<Object>>();// Lista que vai ter uma lista com produto e quantida
+																				//dentro [[Produto, int], ...]
 	
 	public static String staticNome;
 	private static ProdutoBO produtoBO = new ProdutoBO();
 
+	private int scroll = 0; // sempre será menor igual a zero
+	private int tamanhoAntesDeItensNaComanda;
 	
 	public void initialize() {
 		nomeUsuario.setText(staticNome);
-
+		this.tamanhoAntesDeItensNaComanda = this.PaneFuncionario.getChildren().size();
 	}
 	
 	public void LogOut(ActionEvent event) throws Exception{
@@ -48,6 +52,47 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	}
 
 
+	public void ScrollCima() {
+		if(this.produtosNaComanda.size()>5) {
+			if(this.produtosNaComanda.size() + this.scroll > 5) { //scroll sempre será menor igual a zero. Quando ele diminuir do size e der 5 quer dizer q ta no limite
+				this.scroll -= 1;
+				this.ColocarInfoNaComanda();
+			}
+		}
+	}
+	
+	public void ScrollBaixo() {
+		if(this.scroll<0) {//scroll sempre será menor igual a zero.
+			this.scroll += 1;
+			this.ColocarInfoNaComanda();
+		}
+	}
+	
+	private void removeInfo() {
+		this.PaneFuncionario.getChildren().remove(
+				this.tamanhoAntesDeItensNaComanda, 
+				this.PaneFuncionario.getChildren().size()
+				);
+	}
+	
+	private boolean ProdutoEstahNaComanda(Produto prod, int quantidade) {
+		for (int x=0; x<this.produtosNaComanda.size();x++) {
+			Produto prodNaLista = (Produto) this.produtosNaComanda.get(x).get(0);
+			if (prodNaLista.getCodBarras().equals(prod.getCodBarras())) {
+				int quantAnterior = (int) this.produtosNaComanda.get(x).get(1);
+				int quantNova = quantAnterior + quantidade;
+				
+				List<Object> produtoEQuantidade = new ArrayList<Object>();
+				produtoEQuantidade.add(prodNaLista);
+				produtoEQuantidade.add(quantNova);
+				
+				this.produtosNaComanda.set(x, produtoEQuantidade);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void adicionarProduto(ActionEvent event) throws Exception{
 		
 		this.preco.setText("0.00");
@@ -74,8 +119,6 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 		try {
 			List<Produto> produtoColetado= produtoBO.listarPorCampoEspecifico(produto,"cod_de_barras");		
 			produto = produtoColetado.get(0);
-			
-			ProdutoEQuantidade.add(produto);
 		}catch (Exception e) {
 			Label msgErro = LabelFabrica(
 					"Cod. de barras não existe no armazém",
@@ -109,26 +152,37 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 			this.PaneFuncionario.getChildren().add(msgErro);
 			return;
 		}else {
-			DecimalFormat df = new DecimalFormat("#.##");
-			df.setRoundingMode(RoundingMode.CEILING);
-			
-			ProdutoEQuantidade.add(quantEscolhido);
-			this.produtosNaComanda.add(ProdutoEQuantidade);
+			if (!(this.ProdutoEstahNaComanda(produto, quantEscolhido))) {
+				ProdutoEQuantidade.add(produto);
+				ProdutoEQuantidade.add(quantEscolhido);
+				this.produtosNaComanda.add(ProdutoEQuantidade);
+			}
 			Double valorTotalProd = produto.getPreco() * quantEscolhido;
-			this.precoTotalProduto.setText(df.format(valorTotalProd));
+			this.precoTotalProduto.setText(this.df.format(valorTotalProd));
 			
 			this.ColocarInfoNaComanda();
 		}
 	}
 	
 	private void ColocarInfoNaComanda() {
+		this.removeInfo();//limpando para colocar info
+		
 		Double LX = 500.0;
 		Double LY = 185.0;
 		Double distancia = 20.0;
-		DecimalFormat df = new DecimalFormat("#.##");
-		df.setRoundingMode(RoundingMode.CEILING);
+
 		if (this.produtosNaComanda.size() > 0) {
-			for(int x=0;x<this.produtosNaComanda.size();x++) {
+			this.TotalComanda();
+			int end, start;
+			
+			if (this.produtosNaComanda.size()>5) {
+				end = this.produtosNaComanda.size() + this.scroll;
+				start = end - 5;
+			}else {
+				end = this.produtosNaComanda.size();
+				start = 0;
+			}
+			for(int x=start;x<end;x++) {
 				Produto produto = (Produto) this.produtosNaComanda.get(x).get(0); //o segundo get pega o produto q está dentro de uma lista [produto, quantida]
 				Integer quantVendida = (Integer) this.produtosNaComanda.get(x).get(1);
 				Label marcaLinha = LabelFabrica(
@@ -154,6 +208,11 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 						40.0,
 						"#cc1515"
 						);
+				final int posicaoLinha = x;
+				bDel.setOnAction(event->{
+					this.produtosNaComanda.remove(posicaoLinha);
+					this.ColocarInfoNaComanda();
+				});
 				LX += 45;
 				
 				Button bEdit = ButtonFabrica(
@@ -163,12 +222,14 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 						11,
 						40.0
 						);
-				
+				bEdit.setOnAction(event ->{
+					//vai usar posicaoLinha igual ao bDel
+				});
 				LX -= 220.0 + 45;
 				LY += distancia;
 				
 				Label linha2 = LabelFabrica(
-						quantVendida + " X " + produto.getPreco() + " = " + df.format(quantVendida * produto.getPreco()),
+						quantVendida + " X " + produto.getPreco() + " = " + this.df.format(quantVendida * produto.getPreco()),
 						LX, LY,
 						12,
 						true,
@@ -179,6 +240,20 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 				this.PaneFuncionario.getChildren().addAll(marcaLinha, linha, linha2, bDel, bEdit);
 			}
 		}
-		
+	}
+	private void TotalComanda() {
+		Double total = 0.0;
+		for (int x=0;x<this.produtosNaComanda.size(); x++) {
+			Produto prod = (Produto) this.produtosNaComanda.get(x).get(0);
+			int quant = (int) this.produtosNaComanda.get(x).get(1);
+			Double semiTotal = prod.getPreco() * quant;
+			
+			total += semiTotal;
+		}
+		this.precoTotal.setText(this.df.format(total));;
+	}
+	
+	public void FinalizarComanda() {
+		//implementar
 	}
 }
