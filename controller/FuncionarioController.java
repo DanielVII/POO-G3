@@ -1,11 +1,14 @@
 package controller;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import view.Telas;
@@ -347,6 +350,113 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	}
 	
 	public void  pesquisar() {
+		ImageView IV = ImageFabrica(
+				873.0,
+				458.0,
+				80.0,
+				75.0,
+				"view/ve/RectanglePrincipal.png"
+				);
 		
+		Label t = LabelFabrica(
+					"Pesquisar Produto", 
+					80.0, 
+					75.0, 
+					18, 
+					true,
+					800.0
+					);
+		
+		Double LX = 330.0;
+		Double LY = 120.0;
+		Double mudaLY = 30.0;
+		Double mudaLX = 20.0;
+		
+		TextField pesquisa = TextFieldFabrica(
+				"pesquisaProd",
+				300.0,
+				12.0,
+				LX, LY
+				);
+		ChoiceBox<String> tipoEscolhido = ChoiceBoxFabrica(
+				"CBpesquisafunc",
+				LX + 310, LY,
+				80.0
+				);
+		
+		tipoEscolhido.setItems(FXCollections.observableArrayList(
+				"Nome", 
+				"Cod. Barras", 
+				"Marca"));
+		
+		LY += mudaLY;
+		final Double LYErro = LY;
+		pesquisa.setOnAction(event->{
+			String textoPesquisar = pesquisa.getText();
+			String tipoPesquisar = tipoEscolhido.getValue();
+			if(textoPesquisar == null || tipoPesquisar == null) {
+				Label msgErro = LabelFabrica(
+						"Escolha um tipo ou escreva o que deseja pesquisar",
+						LX,
+						LYErro,
+						12,
+						false
+						);
+				msgErro.setTextFill(Color.RED);
+				msgErro.setId("erro1");
+				this.PaneFuncionario.getChildren().add(msgErro);
+				return;
+			}else {
+				List<Produto> listProd = new ArrayList<Produto>();;
+				Produto prod = new Produto();
+				switch (tipoPesquisar){
+					case "Nome":
+						prod.setNome(textoPesquisar);
+						listProd = this.produtoBO.listarPorCampoEspecificoIncompleto(prod, "nome");
+						break;
+					case "Cod. Barras":
+						prod.setCodBarras(textoPesquisar);
+						listProd = this.produtoBO.listarPorCampoEspecificoIncompleto(prod, "cod_de_barras");
+						break;
+					case "Marca":
+						prod.setMarca(textoPesquisar);
+						listProd = this.produtoBO.listarPorCampoEspecificoIncompleto(prod, "marca");
+						break;
+				}
+				Double LYAloha = LYErro;
+				
+				LYAloha += mudaLY;
+				Label lbb = LabelFabrica(
+						"Cod. - Nome - Marca - R$Preço",
+						LX,
+						LYAloha,
+						12,
+						true,
+						300.0
+						);
+				this.PaneFuncionario.getChildren().add(lbb);
+				LYAloha += mudaLY;
+				for (int x=0;x<listProd.size();x++) {
+					String valorS = String.valueOf(listProd.get(x).getPreco());
+					System.out.println(valorS);
+					Label lb = LabelFabrica(
+							listProd.get(x).getCodBarras() + " - " + 
+									listProd.get(x).getNome() + " - "+
+									listProd.get(x).getMarca() + " - "+ 
+									"R$" + valorS,
+							LX,
+							LYAloha,
+							12,
+							true,
+							300.0
+							);
+					this.PaneFuncionario.getChildren().add(lb);
+					LYAloha += mudaLY;
+				}
+			}
+			
+			
+		});
+		this.PaneFuncionario.getChildren().addAll(IV, t,pesquisa, tipoEscolhido);
 	}
 }

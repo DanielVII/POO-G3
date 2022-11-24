@@ -1279,7 +1279,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 						321.0,
 						150.0,
 						150.0,
-						"view/ve/RectangleSecundario.png"
+						"view/ve/RectanglePrincipal.png"
 						);
 				
 		Label t = LabelFabrica(
