@@ -248,5 +248,14 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	
 	public void FinalizarComanda() {
 		//implementar
+		
+		for(int x = 0;x<this.produtosNaComanda.size();x++) {
+			Produto prod = (Produto) this.produtosNaComanda.get(x);
+			List<Produto> produtoColetado = produtoBO.listarPorCampoEspecifico(prod, "cod_de_barras");
+			produtoColetado.get(0).setQuantidade((produtoColetado.get(0).getQuantidade() - prod.getQuantidade()));
+			produtoBO.alterar(produtoColetado.get(0));
+		}
+		this.produtosNaComanda.removeAll(this.produtosNaComanda);
+		this.removeInfo();
 	}
 }
