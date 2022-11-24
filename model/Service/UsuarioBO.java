@@ -67,7 +67,7 @@ public class UsuarioBO {
 							return funcionario;
 						}
 					}
-					
+				 	
 				};
 			}catch (SQLException e) {
 				e.printStackTrace();

@@ -1,0 +1,21 @@
+CREATE TABLE usuarios(
+    id_usuario SERIAL PRIMARY KEY UNIQUE,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(100) NOT NULL,
+    nivel VARCHAR(1) NOT NULL
+);
+
+CREATE TABLE tipos(
+    id_tipo SERIAL PRIMARY KEY UNIQUE,
+    nome VARCHAR(100) NOT NULL UNIQUE,
+    forma_de_venda VARCHAR(1) NOT NULL);
+    
+CREATE TABLE produtos(
+    id_produto SERIAL PRIMARY KEY UNIQUE,
+    nome VARCHAR(100) NOT NULL,
+    marca VARCHAR(100) NOT NULL,
+    cod_de_barras VARCHAR(13) NOT NULL UNIQUE,
+    quantidade DOUBLE PRECISION NOT NULL,
+    preco DOUBLE PRECISION NOT NULL,
+    id_tipo int REFERENCES tipos(id_tipo));

@@ -17,7 +17,7 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 			pst.setString(2, produto.getMarca() );
 			pst.setString(3, produto.getCodBarras());
 			pst.setDouble(4, produto.getPreco());
-			pst.setInt(5, produto.getQuantidade());
+			pst.setDouble(5, produto.getQuantidade());
 			
 			Tipo tipo = produto.getTipo();
 			if (tipo.getId() == 0) {
@@ -55,14 +55,14 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 		}
 		
 	}
-    
+   
     public boolean alterar(Produto produto) {
-		String sql = "UPDATE produtos SET nome=?,marca=?,cod_de_barras=?,preco=?,quantidade=? WHERE cod_de_barras=? ";
+		String sql = "UPDATE produtos SET nome=?,marca=?,id_tipo=?,preco=?,quantidade=? WHERE cod_de_barras=? ";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			pst.setString(1, produto.getNome());
 			pst.setString(2, produto.getMarca() );
-			pst.setString(3, produto.getCodBarras());
+			pst.setInt(3, produto.getTipo().getId());
 			pst.setDouble(4, produto.getPreco());
 			pst.setDouble(5, produto.getQuantidade());
 			pst.setString(6, produto.getCodBarras());
@@ -122,6 +122,35 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 			return null;
 		}
 		
+	}
+	
+	public ResultSet encontrarPorCampoEspecificoIncompleto(Produto produto, String field) {
+		String sql = "SELECT * FROM produtos WHERE " + field +" LIKE ? ;";
+		try {
+			PreparedStatement pst = getConnection().prepareStatement(sql);
+			switch (field) {
+			case "nome":
+				pst.setString(1, "%" + produto.getNome() + "%");
+				break;
+				
+			case "marca":
+				pst.setString(1, "%" + produto.getMarca() + "%");
+				break;
+				
+			case "cod_de_barras":
+				pst.setString(1, "%" + produto.getCodBarras() + "%");
+				break;
+				
+			
+			}
+			
+			ResultSet rs = pst.executeQuery();
+			return rs;
+		
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		}
 	}
 	
 }

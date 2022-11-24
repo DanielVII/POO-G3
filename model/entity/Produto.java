@@ -2,8 +2,7 @@ package model.entity;
 
 public class Produto {
     private String nome, marca, codDeBarras;
-    private Double preco;
-    private int quantidade; 
+    private Double preco, quantidade;
     private Tipo tipo;
 
     /*Se espera aqui que seja escolhido anteriormente um produto por meio da pesquisa do site
@@ -51,11 +50,11 @@ public class Produto {
         return this.preco;
     }
 
-    public int getQuantidade() {
+    public Double getQuantidade() {
     	return this.quantidade;
     }
     
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(Double quantidade) {
     	if(quantidade>=0) this.quantidade = quantidade;
     }
     

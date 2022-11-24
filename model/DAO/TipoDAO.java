@@ -40,12 +40,12 @@ public class TipoDAO extends BaseDAO<Tipo>{
 	}
     
     public boolean alterar(Tipo tipo) {
-		String sql = "UPDATE tipos SET nome=?,forma_de_venda=? WHERE nome=? ";
+		String sql = "UPDATE tipos SET nome=?,forma_de_venda=? WHERE id_tipo=? ";
 		try {
 			PreparedStatement pst = getConnection().prepareStatement(sql);
 			pst.setString(1, tipo.getNome());
 			pst.setString(2, tipo.getFormaDeVenda() );
-			pst.setString(3, tipo.getNome());
+			pst.setInt(3, tipo.getId());
 			pst.executeUpdate();
 			return true;		
 		

@@ -2,8 +2,10 @@ package view;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Telas extends Application {
@@ -15,12 +17,15 @@ public class Telas extends Application {
 	
 	public static void setPrimaryStage(Stage primaryStage) {
 		Telas.primaryStage = primaryStage;
+		
+	
 	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		setPrimaryStage(primaryStage);
 		primaryStage.setTitle("mercado");
 		primaryStage.show();
+		primaryStage.centerOnScreen();
 		telaLogin();
 	}
 
