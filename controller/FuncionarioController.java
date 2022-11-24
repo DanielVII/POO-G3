@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import view.Telas;
 import model.Service.ProdutoBO;
+import model.Service.TipoBO;
 import model.entity.Produto;
 
 import java.math.RoundingMode;
@@ -37,6 +38,7 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	
 	public static String staticNome;
 	private static ProdutoBO produtoBO = new ProdutoBO();
+	private static TipoBO tipoBO = new TipoBO();
 
 	private int scroll = 0; // sempre será menor igual a zero
 	private int tamanhoAntesDeItensNaComanda;
@@ -75,17 +77,7 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	}
 	
 	private boolean ProdutoEstahNaComanda(Produto prod) {
-		for (int x=0; x<this.produtosNaComanda.size();x++) {
-			Produto prodNaLista = this.produtosNaComanda.get(x);
-			if (prodNaLista.getCodBarras().equals(prod.getCodBarras())) {
-				Double quantAnterior = this.produtosNaComanda.get(x).getQuantidade();
-				Double quantNova = quantAnterior + prod.getQuantidade();
-				prod.setQuantidade(quantNova);
 		
-				this.produtosNaComanda.set(x, prod);
-				return true;
-			}
-		}
 		return false;
 	}
 	
@@ -104,6 +96,11 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 		
 		try {
 			this.PaneFuncionario.getChildren().remove(this.PaneFuncionario.lookup("#erro2"));
+		}catch (Exception e) {
+			//aloha
+		}
+		try {
+			this.PaneFuncionario.getChildren().remove(this.PaneFuncionario.lookup("#erro3"));
 		}catch (Exception e) {
 			//aloha
 		}
@@ -131,25 +128,34 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 		this.preco.setText(String.valueOf(produto.getPreco()));
 		this.NomeProduto.setText(produto.getNome());
 		
+		String QuantidadeString = this.quantidade.getText();
 		
-		Double quantEscolhido = Double.valueOf(this.quantidade.getText());
 		
-		if (quantEscolhido <= 0 || this.quantidade.getText() == null) {
-			Label msgErro = LabelFabrica(
-					"Quantidade tem que ser maior que 0",
-					100.0,
-					320.0,
-					12,
-					false
-					);
-			msgErro.setTextFill(Color.RED);
-			msgErro.setId("erro2");
-			this.PaneFuncionario.getChildren().add(msgErro);
-			return;
-		}else {
+		if(this.ValidarQuantidade(QuantidadeString, produto)) {
+			Double quantEscolhido = Double.parseDouble(QuantidadeString);
+			
 			produto.setQuantidade(quantEscolhido);
 			
-			if (!(this.ProdutoEstahNaComanda(produto))) {
+			Double quantEmEstoque = produto.getQuantidade();
+			
+			boolean prodComanda = false;
+			
+			for (int x=0; x<this.produtosNaComanda.size();x++) {
+				Produto prodNaLista = this.produtosNaComanda.get(x);
+				if (prodNaLista.getCodBarras().equals(produto.getCodBarras())) {
+					Double quantAnterior = this.produtosNaComanda.get(x).getQuantidade();
+					Double quantNova = quantAnterior + produto.getQuantidade();
+					
+					if (this.ValidarQuantidade(String.valueOf(quantNova), produto)) {
+						produto.setQuantidade(quantNova);	
+						this.produtosNaComanda.set(x, produto);
+						prodComanda = true;
+					}else {
+						return;
+					}
+				}
+			}
+			if (!prodComanda) {
 				this.produtosNaComanda.add(produto);
 			}
 			Double valorTotalProd = produto.getPreco() * produto.getQuantidade();
@@ -216,9 +222,22 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 						11,
 						40.0
 						);
+				Double LYBEdit = LY;
 				bEdit.setOnAction(event ->{
-					//vai usar posicaoLinha igual ao bDel
-				});
+					TextField TF = TextFieldFabrica(
+							"TF" + posicaoLinha,
+							40.0, 12.0,
+							455.0, LYBEdit
+							);
+					TF.setOnAction(EventHandler -> {
+						if (this.ValidarQuantidade(TF.getText(), this.produtosNaComanda.get(posicaoLinha))){
+							Double quant = Double.parseDouble(TF.getText());
+							this.produtosNaComanda.get(posicaoLinha).setQuantidade(quant);
+							this.ColocarInfoNaComanda();
+						}
+					});
+					
+					this.PaneFuncionario.getChildren().add(TF);				});
 				LX -= 220.0 + 45;
 				LY += distancia;
 				
@@ -235,6 +254,76 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 			}
 		}
 	}
+	
+	private boolean ValidarQuantidade(String quantidade, Produto produto) {
+		Double quantEscolhido;
+		try {
+			 quantEscolhido = Double.valueOf(quantidade);
+		}catch (Exception e){
+			Label msgErro = LabelFabrica(
+					"Quantidade tem que ser numerico",
+					100.0,
+					360.0,
+					12,
+					false
+					);
+			msgErro.setTextFill(Color.RED);
+			msgErro.setId("erro4");
+			this.PaneFuncionario.getChildren().add(msgErro);
+			return false;
+		}
+		if (quantEscolhido <= 0 || this.quantidade.getText() == null) {
+			Label msgErro = LabelFabrica(
+					"Quantidade tem que ser maior que 0",
+					100.0,
+					320.0,
+					12,
+					false
+					);
+			msgErro.setTextFill(Color.RED);
+			msgErro.setId("erro2");
+			this.PaneFuncionario.getChildren().add(msgErro);
+			return false;}
+		
+		produto.setTipo(this.tipoBO.BuscarTodaInfoSoComId(produto.getTipo().getId()));
+		if (produto.getTipo().getFormaDeVenda().equals("u")) {
+			int quantInt = quantEscolhido.intValue();
+			if(quantEscolhido - quantInt > 0) {
+				Label msgErro = LabelFabrica(
+						"Quantidade Escolhida é decimal, o produto é unitario",
+						100.0,
+						340.0,
+						12,
+						false
+						);
+				msgErro.setTextFill(Color.RED);
+				msgErro.setId("erro3");
+				this.PaneFuncionario.getChildren().add(msgErro);
+				return false;
+			}
+		}
+		
+		List<Produto> listProd = this.produtoBO.listarPorCampoEspecifico(produto, "cod_de_barras");//Isso é necessario pois o produto fornecido em alguns contextos terão a quantidade existente na comanda, n no bd
+		Produto novoProd = listProd.get(0);
+		Double quantEmEstoque = novoProd.getQuantidade();
+
+		if(quantEmEstoque < quantEscolhido) {
+			Label msgErro = LabelFabrica(
+					"Falta estoque",
+					100.0,
+					380.0,
+					12,
+					false
+					);
+			msgErro.setTextFill(Color.RED);
+			msgErro.setId("erro5");
+			this.PaneFuncionario.getChildren().add(msgErro);
+			return false;
+		}
+		
+		return true;
+	}
+	
 	private void TotalComanda() {
 		Double total = 0.0;
 		for (int x=0;x<this.produtosNaComanda.size(); x++) {
@@ -247,8 +336,6 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	}
 	
 	public void FinalizarComanda() {
-		//implementar
-		
 		for(int x = 0;x<this.produtosNaComanda.size();x++) {
 			Produto prod = (Produto) this.produtosNaComanda.get(x);
 			List<Produto> produtoColetado = produtoBO.listarPorCampoEspecifico(prod, "cod_de_barras");
@@ -257,5 +344,9 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 		}
 		this.produtosNaComanda.removeAll(this.produtosNaComanda);
 		this.removeInfo();
+	}
+	
+	public void  pesquisar() {
+		
 	}
 }

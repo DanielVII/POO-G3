@@ -22,7 +22,7 @@ public class TipoBO implements BaseInterBO<Tipo>{
 				return false;
 			}
 	}
-	
+	 
 	private boolean NaoExisteNoBD(Tipo tipo) {
 		ResultSet existe = dao.encontrarPorCampoEspecifico(tipo, "nome");
 		try { 

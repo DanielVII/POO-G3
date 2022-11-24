@@ -399,10 +399,12 @@ public class GerenteController extends ElementoFxmlFabrica{
 			
 			List<Produto> lProd = this.prodBO.listarPorCampoEspecifico(prod, "cod_de_barras");
 			
-			if (lProd != null) {
+			TextField tFQuanti = (TextField) this.PaneGerente.lookup("#quant");
+			Double quantidade = Double.parseDouble(tFQuanti.getText());
+			int quantInt = quantidade.intValue();
+			
+			if (lProd.size()>0 && quantidade - quantInt == 0) {
 				prod = lProd.get(0);
-				TextField tFQuanti = (TextField) this.PaneGerente.lookup("#quant");
-				Integer quantidade = Integer.parseInt(tFQuanti.getText());
 				prod.setQuantidade(prod.getQuantidade()+quantidade);
 				
 				this.prodBO.alterar(prod);
@@ -410,12 +412,11 @@ public class GerenteController extends ElementoFxmlFabrica{
 				this.GerarTela(true);
 			}else {
 				Label msgErro = LabelFabrica(
-						"O cod de barras não existe no armazém",
-						370.0,
+						"O cod de barras não existe no armazém ou a quantidade é decimal para produto unitario",
+						300.0,
 						260.0,
 						12,
-						false,
-						300.0);
+						false);
 				msgErro.setTextFill(Color.RED);
 				this.PaneGerente.getChildren().add(msgErro);
 			}
@@ -548,12 +549,12 @@ public class GerenteController extends ElementoFxmlFabrica{
 				this.GerarTela(true);
 			}else {
 				Double LYErro = LY;
-				Double LXErro = 390.0;
+				Double LXErro = 300.0;
 				
 				LYErro -= 30;
 				
 				Label msgError = LabelFabrica(
-						"Produto já existe no armazém",
+						"Produto já existe no armazém ou a quantidade é decimal para produto unitario",
 						LXErro,
 						LYErro,
 						12,
@@ -668,12 +669,12 @@ public class GerenteController extends ElementoFxmlFabrica{
 				this.GerarTela(true);
 			}else {
 				Double LYErro = LY;
-				Double LXErro = 390.0;
+				Double LXErro = 300.0;
 				
 				LYErro -= 30;
 				
 				Label msgError = LabelFabrica(
-						"Produto já existe no armazém",
+						"Produto já existe no armazém ou a quantidade é decimal para produto unitario",
 						LXErro,
 						LYErro,
 						12,
@@ -1000,7 +1001,7 @@ public class GerenteController extends ElementoFxmlFabrica{
 					this.RemoveInfo(false);
 				}else {
 					Label msgErro = LabelFabrica(
-							"Item já existe no armazém",
+							"Item já existe no armazém ou a quantidade é decimal para produto unitario",
 							430.0,
 							280.0,
 							12,
