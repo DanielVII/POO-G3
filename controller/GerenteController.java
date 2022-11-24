@@ -397,17 +397,15 @@ public class GerenteController extends ElementoFxmlFabrica{
 			Produto prod = new Produto();
 			prod.setCodBarras(tFCode.getText());
 			
+			List<Produto> lProd = this.prodBO.listarPorCampoEspecifico(prod, "cod_de_barras");
 			
-			ProdutoBO bo = new ProdutoBO();
-			if (bo.ExisteNoBD(prod)) {
-				List<Produto> lProd = bo.listarPorCampoEspecifico(prod, "cod_de_barras");
-				
+			if (lProd != null) {
 				prod = lProd.get(0);
 				TextField tFQuanti = (TextField) this.PaneGerente.lookup("#quant");
 				Integer quantidade = Integer.parseInt(tFQuanti.getText());
 				prod.setQuantidade(prod.getQuantidade()+quantidade);
 				
-				bo.alterar(prod);
+				this.prodBO.alterar(prod);
 				this.RemoveInfo(true);
 				this.GerarTela(true);
 			}else {
@@ -523,8 +521,8 @@ public class GerenteController extends ElementoFxmlFabrica{
 				return;
 			}else {
 				try {
-					Integer intQuantidadeProd = Integer.parseInt(stringQuantidadeProd);
-					prodEditado.setQuantidade(intQuantidadeProd);
+					Double doubleQuantidadeProd = Double.parseDouble(stringQuantidadeProd);
+					prodEditado.setQuantidade(doubleQuantidadeProd);
 				}catch (Exception i){
 					this.ErroEmNovoEEditarProd(LY);
 					return;
@@ -642,8 +640,8 @@ public class GerenteController extends ElementoFxmlFabrica{
 				return;
 			}else {
 				try {
-					Integer intQuantidadeProd = Integer.parseInt(stringQuantidadeProd);
-					prod.setQuantidade(intQuantidadeProd);
+					Double doubleQuantidadeProd = Double.parseDouble(stringQuantidadeProd);
+					prod.setQuantidade(doubleQuantidadeProd);
 				}catch (Exception e){
 					this.ErroEmNovoEEditarProd(LY);
 					return;
@@ -706,12 +704,9 @@ public class GerenteController extends ElementoFxmlFabrica{
 	
 	public List<Double> BaseTelaNovoEEditarProduto(String titulo) {
 		this.BaseParaNovaPagina(titulo);
-		
-		List<Tipo> TodosTipos = BOTipo.listarTodos();
-		
 		List<String> itens = new ArrayList<String>();
 		
-		for(int x=0;x<TodosTipos.size();x++) itens.add(TodosTipos.get(x).getNome());
+		
 			
 		Double LX = 340.0;
 		Double LY = 192.0;
@@ -729,14 +724,29 @@ public class GerenteController extends ElementoFxmlFabrica{
 		nomeTipo.setAlignment(Pos.CENTER_RIGHT);
 		
 		LX += DistanciaLabelEField;
+		ChoiceBox CBNomeTipo = new ChoiceBox<String>();
 		
-		ChoiceBox CBNomeTipo = ChoiceBoxFabrica(
-				"ChoiceNomeTipoProduto",
-				LX,
-				LY,
-				LarguraField,
-				itens
-				);
+		try {
+			List<Tipo> TodosTipos = BOTipo.listarTodos();
+			
+			for(int x=0;x<TodosTipos.size();x++) itens.add(TodosTipos.get(x).getNome());
+			
+			CBNomeTipo = ChoiceBoxFabrica(
+					"ChoiceNomeTipoProduto",
+					LX,
+					LY,
+					LarguraField,
+					itens
+					);
+		}catch (Exception e){
+			CBNomeTipo = ChoiceBoxFabrica(
+					"ChoiceNomeTipoProduto",
+					LX,
+					LY,
+					LarguraField
+					);
+		}
+		 
 		
 		Button NovoTipo = ButtonFabrica(
 				"+",

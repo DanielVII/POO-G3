@@ -46,7 +46,7 @@ public class ElementoFxmlFabrica implements InterFabrica{
 		// TODO Auto-generated method stub
 		return bt;
 	}
-	
+	 
 	@Override
 	public Button ButtonFabrica(String Nome, String Id, Double LayX, Double LayY, int TamanhoFont, Double Largura,
 			 String CorHexadecimal) {
@@ -84,13 +84,18 @@ public class ElementoFxmlFabrica implements InterFabrica{
 
 	@Override
 	public ChoiceBox ChoiceBoxFabrica(String id, Double LayX, Double LayY, Double Largura, List<String> ListaValores) {
+		ChoiceBox<String> CB = ChoiceBoxFabrica(id, LayX, LayY, Largura);
+		CB.setItems(FXCollections.observableArrayList(ListaValores));
+		return CB;
+	}
+
+	@Override
+	public ChoiceBox ChoiceBoxFabrica(String id, Double LayX, Double LayY, Double Largura) {
 		ChoiceBox<String> CB = new ChoiceBox<String>();
 		CB.setId(id);
 		CB.setLayoutX(LayX);
 		CB.setLayoutY(LayY);
 		CB.setPrefWidth(Largura);
-		String a = ListaValores.get(0);
-		CB.setItems(FXCollections.observableArrayList(ListaValores));
 		return CB;
 	}
 

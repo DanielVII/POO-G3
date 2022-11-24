@@ -65,4 +65,11 @@ public interface InterFabrica {
 			List<String> ListaValores
 			);
 	
+	public ChoiceBox ChoiceBoxFabrica(
+			String id,
+			Double LayX,
+			Double LayY,
+			Double Largura
+			);
+	
 }

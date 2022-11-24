@@ -13,7 +13,7 @@ import model.DAO.ProdutoDAO;
 public class ProdutoBO implements BaseInterBO<Produto>{
 	ProdutoDAO dao = new ProdutoDAO();
 	
-	public boolean ExisteNoBD(Produto produto) {
+	private boolean ExisteNoBD(Produto produto) {
 		ResultSet existe = dao.encontrarPorCampoEspecifico(produto, "cod_de_barras");
 		try { 
 			return existe != null && existe.next();
@@ -52,7 +52,7 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 	
 	public boolean alterar (Produto produto){
 		if (this.ExisteNoBD(produto)) {
-			if (dao.alterar(produto) == true)return true;
+			if (dao.alterar(produto))return true;
 			else return false;
 		}else return false;
 	}
@@ -66,7 +66,7 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 				produtoLista.setNome(rs.getString("nome"));
 				produtoLista.setMarca(rs.getString("marca"));
 				produtoLista.setCodBarras(rs.getString("cod_de_barras"));
-				produtoLista.setQuantidade(rs.getInt("quantidade"));
+				produtoLista.setQuantidade(rs.getDouble("quantidade"));
 				produtoLista.setPreco(rs.getDouble("preco"));
 				
 				int idTipo = rs.getInt("id_tipo");
@@ -95,7 +95,7 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 				produtoLista.setNome(rs.getString("nome"));
 				produtoLista.setMarca(rs.getString("marca"));
 				produtoLista.setCodBarras(rs.getString("cod_de_barras"));
-				produtoLista.setQuantidade(rs.getInt("quantidade"));
+				produtoLista.setQuantidade(rs.getDouble("quantidade"));
 				produtoLista.setPreco(rs.getDouble("preco"));
 				
 				int idTipo = rs.getInt("id_tipo");
@@ -124,7 +124,7 @@ public class ProdutoBO implements BaseInterBO<Produto>{
 				produtoLista.setNome(rs.getString("nome"));
 				produtoLista.setMarca(rs.getString("marca"));
 				produtoLista.setCodBarras(rs.getString("cod_de_barras"));
-				produtoLista.setQuantidade(rs.getInt("quantidade"));
+				produtoLista.setQuantidade(rs.getDouble("quantidade"));
 				produtoLista.setPreco(rs.getDouble("preco"));
 				
 				int idTipo = rs.getInt("id_tipo");

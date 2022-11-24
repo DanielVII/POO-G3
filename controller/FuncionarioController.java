@@ -33,8 +33,7 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	
 	private DecimalFormat df = new DecimalFormat("#.##");
 	
-	private List<List<Object>> produtosNaComanda = new ArrayList<List<Object>>();// Lista que vai ter uma lista com produto e quantida
-																				//dentro [[Produto, int], ...]
+	private List<Produto> produtosNaComanda = new ArrayList<Produto>();
 	
 	public static String staticNome;
 	private static ProdutoBO produtoBO = new ProdutoBO();
@@ -75,18 +74,15 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 				);
 	}
 	
-	private boolean ProdutoEstahNaComanda(Produto prod, int quantidade) {
+	private boolean ProdutoEstahNaComanda(Produto prod) {
 		for (int x=0; x<this.produtosNaComanda.size();x++) {
-			Produto prodNaLista = (Produto) this.produtosNaComanda.get(x).get(0);
+			Produto prodNaLista = this.produtosNaComanda.get(x);
 			if (prodNaLista.getCodBarras().equals(prod.getCodBarras())) {
-				int quantAnterior = (int) this.produtosNaComanda.get(x).get(1);
-				int quantNova = quantAnterior + quantidade;
-				
-				List<Object> produtoEQuantidade = new ArrayList<Object>();
-				produtoEQuantidade.add(prodNaLista);
-				produtoEQuantidade.add(quantNova);
-				
-				this.produtosNaComanda.set(x, produtoEQuantidade);
+				Double quantAnterior = this.produtosNaComanda.get(x).getQuantidade();
+				Double quantNova = quantAnterior + prod.getQuantidade();
+				prod.setQuantidade(quantNova);
+		
+				this.produtosNaComanda.set(x, prod);
 				return true;
 			}
 		}
@@ -114,7 +110,6 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 		
 		Produto produto = new Produto();
 		produto.setCodBarras(buscar.getText());
-		List<Object> ProdutoEQuantidade = new ArrayList<Object>();
 		//vendo se cod é valido
 		try {
 			List<Produto> produtoColetado= produtoBO.listarPorCampoEspecifico(produto,"cod_de_barras");		
@@ -137,7 +132,7 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 		this.NomeProduto.setText(produto.getNome());
 		
 		
-		Integer quantEscolhido = Integer.valueOf(this.quantidade.getText());
+		Double quantEscolhido = Double.valueOf(this.quantidade.getText());
 		
 		if (quantEscolhido <= 0 || this.quantidade.getText() == null) {
 			Label msgErro = LabelFabrica(
@@ -152,12 +147,12 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 			this.PaneFuncionario.getChildren().add(msgErro);
 			return;
 		}else {
-			if (!(this.ProdutoEstahNaComanda(produto, quantEscolhido))) {
-				ProdutoEQuantidade.add(produto);
-				ProdutoEQuantidade.add(quantEscolhido);
-				this.produtosNaComanda.add(ProdutoEQuantidade);
+			produto.setQuantidade(quantEscolhido);
+			
+			if (!(this.ProdutoEstahNaComanda(produto))) {
+				this.produtosNaComanda.add(produto);
 			}
-			Double valorTotalProd = produto.getPreco() * quantEscolhido;
+			Double valorTotalProd = produto.getPreco() * produto.getQuantidade();
 			this.precoTotalProduto.setText(this.df.format(valorTotalProd));
 			
 			this.ColocarInfoNaComanda();
@@ -183,8 +178,7 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 				start = 0;
 			}
 			for(int x=start;x<end;x++) {
-				Produto produto = (Produto) this.produtosNaComanda.get(x).get(0); //o segundo get pega o produto q está dentro de uma lista [produto, quantida]
-				Integer quantVendida = (Integer) this.produtosNaComanda.get(x).get(1);
+				Produto produto = (Produto) this.produtosNaComanda.get(x); 
 				Label marcaLinha = LabelFabrica(
 						x + "|" ,
 						LX, LY,
@@ -229,7 +223,7 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 				LY += distancia;
 				
 				Label linha2 = LabelFabrica(
-						quantVendida + " X " + produto.getPreco() + " = " + this.df.format(quantVendida * produto.getPreco()),
+						produto.getQuantidade() + " X " + produto.getPreco() + " = " + this.df.format(produto.getQuantidade() * produto.getPreco()),
 						LX, LY,
 						12,
 						true,
@@ -244,9 +238,8 @@ public class FuncionarioController extends ElementoFxmlFabrica{
 	private void TotalComanda() {
 		Double total = 0.0;
 		for (int x=0;x<this.produtosNaComanda.size(); x++) {
-			Produto prod = (Produto) this.produtosNaComanda.get(x).get(0);
-			int quant = (int) this.produtosNaComanda.get(x).get(1);
-			Double semiTotal = prod.getPreco() * quant;
+			Produto prod = (Produto) this.produtosNaComanda.get(x);
+			Double semiTotal = prod.getPreco() * prod.getQuantidade();
 			
 			total += semiTotal;
 		}

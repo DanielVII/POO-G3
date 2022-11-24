@@ -17,7 +17,7 @@ public class ProdutoDAO extends BaseDAO<Produto>{
 			pst.setString(2, produto.getMarca() );
 			pst.setString(3, produto.getCodBarras());
 			pst.setDouble(4, produto.getPreco());
-			pst.setInt(5, produto.getQuantidade());
+			pst.setDouble(5, produto.getQuantidade());
 			
 			Tipo tipo = produto.getTipo();
 			if (tipo.getId() == 0) {
