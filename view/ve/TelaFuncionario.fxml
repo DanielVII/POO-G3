@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:id="PaneFuncionario" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FuncionarioController">
+   <children>
+      <ImageView fitHeight="73.0" fitWidth="961.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@topo.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="nomeUsuario" layoutX="70.0" layoutY="21.0" prefHeight="23.0" prefWidth="167.0" text="nomeFuncionaro" textFill="WHITE" />
+      <Button fx:id="botaoSair" layoutX="887.0" layoutY="20.0" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: #13ABC4;" text="Sair" textFill="WHITE" />
+      <ImageView fitHeight="458.0" fitWidth="873.0" layoutX="80.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@RectanglePrincipal.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="607.0" layoutY="99.0" text="Comanda">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="100.0" layoutY="105.0" text="Código" />
+      <TextField fx:id="buscar" layoutX="100.0" layoutY="122.0" prefHeight="25.0" prefWidth="174.0" />
+      <Label layoutX="100.0" layoutY="147.0" text="Quantidade" />
+      <TextField fx:id="quantidade" layoutX="100.0" layoutY="164.0" prefHeight="25.0" prefWidth="174.0" text="1" />
+      <Label layoutX="100.0" layoutY="243.0" text="Valor Unidade" />
+      <ImageView fitHeight="49.0" fitWidth="143.0" layoutX="100.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CaixaPesquisa%20(1).png" />
+         </image></ImageView>
+      <Button layoutX="225.0" layoutY="440.0" mnemonicParsing="false" onAction="#adicionarProduto" prefHeight="49.0" prefWidth="91.0" style="-fx-background-color: #06FF6A;" text="Adicionar produto" textAlignment="CENTER" wrapText="true" />
+      <ImageView fitHeight="49.0" fitWidth="152.0" layoutX="490.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CaixaPesquisa%20(1).png" />
+         </image>
+      </ImageView>
+      <Button layoutX="620.0" layoutY="438.0" mnemonicParsing="false" onAction="#FinalizarComanda" prefHeight="49.0" prefWidth="91.0" style="-fx-background-color: #06FF6A;" text="Finalizar" textAlignment="CENTER" wrapText="true" />
+      <Label fx:id="preco" layoutX="100.0" layoutY="260.0" text="0.00" />
+      <Label fx:id="precoTotalProduto" layoutX="110.0" layoutY="442.0" prefHeight="41.0" prefWidth="100.0" text="0" />
+      <Label layoutX="100.0" layoutY="420.0" text="Preço Total Produto" />
+      <Label fx:id="mensagemErro" layoutX="47.0" layoutY="192.0" text="*Não a suficiente em estoque" textFill="RED" visible="false" />
+      <Label layoutX="100.0" layoutY="197.0" text="Nome:" />
+      <Label fx:id="NomeProduto" layoutX="100.0" layoutY="214.0" text="nomeproduto" />
+      <ImageView fitHeight="298.0" fitWidth="331.0" layoutX="490.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CaixaPesquisa%20(3).png" />
+         </image>
+      </ImageView>
+      <Label fx:id="precoTotal" layoutX="503.0" layoutY="444.0" prefHeight="37.0" prefWidth="104.0" text="0" />
+      <Label alignment="CENTER" layoutX="516.0" layoutY="135.0" prefWidth="120.0" text="COD." />
+      <Label alignment="CENTER" layoutX="589.0" layoutY="135.0" prefWidth="120.0" text="Nome" />
+      <Label alignment="CENTER" layoutX="509.0" layoutY="155.0" prefWidth="90.0" text="Quant" />
+      <Label alignment="CENTER" layoutX="577.0" layoutY="155.0" prefWidth="90.0" text="Preço" />
+      <Label alignment="CENTER" layoutX="648.0" layoutY="155.0" prefWidth="90.0" text="Total" />
+      <Line endX="239.0" layoutX="569.0" layoutY="177.0" startX="-75.0" />
+      <Label layoutX="585.0" layoutY="156.0" text="X" />
+      <Button layoutX="810.0" layoutY="177.0" mnemonicParsing="false" onAction="#ScrollCima" prefWidth="26.0" text="/\" />
+      <Button layoutX="810.0" layoutY="205.0" mnemonicParsing="false" onAction="#ScrollBaixo" prefWidth="26.0" text="V" />
+      <Label layoutX="607.0" layoutY="135.0" text="-" />
+      <Label layoutX="653.0" layoutY="155.0" text="=" />
+      <Button layoutX="343.0" layoutY="93.0" mnemonicParsing="false" onAction="#pesquisar" prefHeight="41.0" prefWidth="85.0" text="Pesquisar" />
+   </children>
+</Pane>

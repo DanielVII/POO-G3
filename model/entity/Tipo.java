@@ -28,7 +28,7 @@ public class Tipo {
     }
     
     public void setFormaDeVenda(String formaDeVenda){
-    	if (formaDeVenda == "q" || formaDeVenda == "u"){
+    	if (formaDeVenda.equals("q") || formaDeVenda.equals("u")){
     		this.formaDeVenda = formaDeVenda;
     	}
     }

@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.entity.Funcionario;
+import model.entity.Gerente;
 import model.entity.Usuario;
 import model.DAO.BaseInterDAO;
 import model.DAO.UsuarioDAO;
@@ -33,6 +35,45 @@ public class UsuarioBO {
 				e.printStackTrace();
 				return false;
 			}
+	}
+	
+	public Usuario autenticar(Usuario usuario) {
+		if (this.ExisteNoBD(usuario)) {
+			ResultSet rs = dao.encontrarPorCampoEspecifico(usuario, "email");
+			Usuario user = new Usuario();
+			try {
+				while(rs.next()) {
+					user.setEmail(rs.getString("email"));
+					user.setSenha(rs.getString("senha"));
+					user.setNome(rs.getString("nome"));
+					user.setNivel(rs.getInt("nivel"));
+				}
+				if (user.getSenha().equals(usuario.getSenha())) {
+					//nivel 1 é gerente. nivel 2 é funcionario.
+					if (user.getNivel() == 1) {
+						Usuario gerente = new Gerente();
+						gerente.setEmail(user.getEmail());
+						gerente.setNivel(user.getNivel());
+						gerente.setNome(user.getNome());
+						gerente.setSenha(user.getSenha());
+						return gerente;
+					}else {
+						if (user.getNivel() == 2) {
+							Usuario funcionario = new Funcionario();
+							funcionario.setEmail(user.getEmail());
+							funcionario.setNivel(user.getNivel());
+							funcionario.setNome(user.getNome());
+							funcionario.setSenha(user.getSenha());
+							return funcionario;
+						}
+					}
+				 	
+				};
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 	
 	public boolean inserir (Usuario usuario){
